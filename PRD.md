@@ -1,393 +1,303 @@
-# Product Requirements Document: eva9.ai Personal Website
+# Product Requirements Document: blog.eva9.ai
 
-**Version:** v1.0 FINAL  
+**Version:** v2.0 — Ready for Phase 1  
 **Date:** 2026-06-06  
 **Author:** Eva2  
-**Client:** Jacky Chen (Sheng) — Solo AI Entrepreneur
+**Product Owner:** Jacky Chen (Sheng)
 
 ---
 
-## Executive Summary
+## Product Vision
 
-A bilingual (Chinese/English) personal website for Jacky Chen's one-person AI company. Combines professional portfolio, multi-category blog, audience-building, and consulting lead-generation.
+A bilingual personal website that serves as the digital home for Jacky Chen's solo AI company — combining portfolio, blog, audience-building, and consulting lead-generation in one place.
 
-### Core Constraints
-- [x] **完全免费** — 所有工具和服务使用免费层，$0 月费
-- [x] **数据自控** — 内容、评论、留言全在自己控制的存储中
-- [x] **本地优先** — 文章以 Markdown 存储在本地 Git
+### Core Principles
+- **Content-first**: The writing is the product. Everything else serves the content.
+- **Bilingual by default**: Every feature works in both English and Chinese.
+- **Self-controlled**: All data lives in Jacky's own AWS account. No third-party data dependencies.
+- **$0 operating cost**: All services stay within permanent free tiers.
+- **Simple to maintain**: Write Markdown locally. Git push to publish. Zero runtime maintenance.
 
 ---
 
-## Architecture Overview
+## User Roles
+
+| Role | Description |
+|------|-------------|
+| **Anonymous Visitor** | Anyone browsing the site. Can read all public content. |
+| **Registered User** | Has an account (email + password). Can comment on posts, save dark mode preference. |
+| **Admin (Jacky)** | Full control. Manages content, moderates comments, views analytics. |
+
+---
+
+## Product Scope
+
+### In Scope ✅
+- Multi-category bilingual blog (Work / Learn / Hobby / Life)
+- Blog post with text, images, embedded video, code blocks
+- User registration (email + password), login, email verification
+- Comment system with admin moderation queue + AI auto-moderation
+- Contact form with email notification
+- Admin dashboard (comments, users, visitors, analytics)
+- Dark mode (user preference for registered, system-follow for anonymous)
+- SEO/GEO optimization (SSG, sitemap, structured data, hreflang, llms.txt)
+- Visitor analytics with IP tracking
+- RSS feed
+
+### Out of Scope ❌ (Future Phases)
+- Newsletter / email marketing
+- E-commerce or payment
+- Social login (Google/GitHub OAuth)
+- Real-time chat
+- Multi-admin roles
+- Public user profiles
+- API for third-party integrations
+
+---
+
+## User Stories by Feature
+
+### F1: Blog System
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F1.1 | Visitor | browse blog posts by category | I can find content relevant to my interests | P0 |
+| F1.2 | Visitor | read a blog post with clean typography | I can comfortably consume long-form content | P0 |
+| F1.3 | Visitor | see reading time on each post | I know how long it will take to read | P1 |
+| F1.4 | Visitor | see related posts at the bottom | I can discover more relevant content | P2 |
+| F1.5 | Visitor | subscribe via RSS | I can follow the blog in my feed reader | P1 |
+| F1.6 | Visitor | search across all blog posts | I can find specific content quickly | P2 |
+| F1.7 | Admin | publish a post by writing a Markdown file | I can create content with my familiar tools | P0 |
+| F1.8 | Admin | categorize each post (Work/Learn/Hobby/Life) | my content is organized logically | P0 |
+| F1.9 | Admin | include images, videos, and code blocks in posts | my content is rich and engaging | P1 |
+
+### F2: Bilingual Support
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F2.1 | Visitor | switch between English and Chinese | I can read in my preferred language | P0 |
+| F2.2 | Visitor | see the website UI in my browser's default language | it feels native to me | P0 |
+| F2.3 | Visitor | see a link to the original version of a translated post | I can read the source if I prefer | P1 |
+| F2.4 | Admin | write a post in one language and provide a translation | both audiences get the content | P0 |
+| F2.5 | Search Engine | receive correct hreflang tags | bilingual content is indexed properly | P1 |
+
+### F3: User Registration & Comments
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F3.1 | Visitor | register with my email and password | I can participate in discussions | P0 |
+| F3.2 | Visitor | verify my email after registration | my account is confirmed as real | P1 |
+| F3.3 | Visitor | log in to my account | I can comment and manage preferences | P0 |
+| F3.4 | Registered User | comment on a blog post | I can share my thoughts | P0 |
+| F3.5 | Registered User | see my comment appear after approval | I know it was received | P0 |
+| F3.6 | Registered User | delete my own comment | I can remove something I regret | P2 |
+| F3.7 | Admin | see all comments in a moderation queue | I can review before publishing | P0 |
+| F3.8 | Admin | approve or reject a comment | inappropriate content is filtered | P0 |
+| F3.9 | Admin | rely on AI to auto-approve comments by default | I don't have to manually review everything | P1 |
+
+**Moderation Rules (Phase 1 default):**
+- Comments from verified-email users → **auto-approve** (AI checks for spam/abuse keywords)
+- Comments from unverified users → **hold for review**
+- Comments containing flagged patterns (links, profanity, Chinese spam keywords) → **hold for review**
+- Admin can override any decision from the moderation queue
+
+### F4: Contact Form
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F4.1 | Visitor | send a message via a contact form | I can reach the site owner | P1 |
+| F4.2 | Visitor | know my message was sent successfully | I'm not left wondering | P1 |
+| F4.3 | Admin | receive an email when someone submits the contact form | I can respond promptly | P1 |
+
+### F5: Dark Mode
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F5.1 | Anonymous Visitor | the site follows my system dark/light preference | it's comfortable to read | P1 |
+| F5.2 | Registered User | override the theme in my personal settings | I can set my preference independently | P2 |
+| F5.3 | All Users | toggle between dark and light mode manually | I can switch on the fly | P1 |
+
+### F6: Admin Dashboard
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F6.1 | Admin | log in with secure credentials | only I can access admin functions | P0 |
+| F6.2 | Admin | view and moderate comments (approve/reject) | I control what appears on my site | P0 |
+| F6.3 | Admin | view registered users | I know who's participating | P1 |
+| F6.4 | Admin | view contact messages | I can read and respond to inquiries | P1 |
+| F6.5 | Admin | see visitor statistics (page views, unique IPs, top pages) | I understand my audience | P1 |
+| F6.6 | Admin | see recent visitor logs (IP, time, page) | I can identify patterns or abuse | P1 |
+
+### F7: GEO / SEO
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F7.1 | Search Engine | crawl a complete XML sitemap | all pages are discoverable | P0 |
+| F7.2 | Search Engine | see OpenGraph and Twitter Card meta tags | shared links look good | P0 |
+| F7.3 | Search Engine | see JSON-LD structured data | content is understood by AI search | P0 |
+| F7.4 | AI Crawler | access llms.txt and llms-full.txt | my content is indexed by AI models | P1 |
+| F7.5 | Search Engine | receive correct canonical URLs | duplicate content is handled | P1 |
+| F7.6 | Search Engine | receive correct hreflang tags | bilingual pages are properly indexed | P1 |
+
+### F8: Homepage & Static Pages
+
+| ID | As a... | I want to... | So that... | Priority |
+|----|---------|-------------|-----------|----------|
+| F8.1 | Visitor | land on a clear homepage with hero section | I immediately know who this is | P0 |
+| F8.2 | Visitor | see latest blog posts on the homepage | I can discover recent content | P0 |
+| F8.3 | Visitor | click category cards to browse by topic | I can explore what interests me | P0 |
+| F8.4 | Visitor | read an About page with bio and experience | I can learn about the author | P0 |
+| F8.5 | Visitor | find contact information easily | I can reach out | P1 |
+
+---
+
+## Phase Plan
+
+### Phase 1: MVP — Complete End-to-End Flow
+
+**Goal:** A fully working bilingual blog website. A visitor can browse posts, register, verify email, comment (with moderation). Admin can moderate and view analytics. Everything deployed and live on blog.eva9.ai.
+
+| Feature | User Story | Deliverable |
+|---------|-----------|-------------|
+| **Blog - Read** | F1.1, F1.2, F1.7, F1.8 | Markdown blog with 4 categories, blog index, post pages |
+| **Blog - Content** | F1.9 | Images + code blocks support. 2-3 seed posts (en + zh) |
+| **Bilingual** | F2.1, F2.2, F2.4 | `/en/` and `/zh/` routing, language switcher, browser detection |
+| **SEO** | F7.1, F7.2, F7.3 | Sitemap, OG/Twitter meta, JSON-LD structured data |
+| **Homepage** | F8.1, F8.2, F8.3 | Modern card-style homepage: hero + latest posts grid + category cards |
+| **About** | F8.4 | About page with bio and experience |
+| **Dark Mode** | F5.1 | System-follow dark/light mode (all visitors) |
+| **Registration** | F3.1, F3.3 | Email + password register, login, JWT token |
+| **Email Verify** | F3.2 | Send verification email via AWS SES |
+| **Comments - Submit** | F3.4, F3.5 | Submit comment → queued → "pending review" shown to user |
+| **Comments - Moderate** | F3.7, F3.8 | Admin dashboard: comment moderation queue (approve/reject) |
+| **Comments - AI** | F3.9 | AI auto-approve for verified users without flagged content |
+| **Contact** | F4.1, F4.2, F4.3 | Contact form → email to admin via SES |
+| **Admin Login** | F6.1 | Admin JWT login (single account, env var configured) |
+| **Admin Dashboard** | F6.2, F6.3, F6.4 | Moderate comments, view users, view messages |
+| **Analytics** | F6.5, F6.6 | Visitor log (IP, page, time) + stats dashboard |
+| **Deployment** | — | S3 + CloudFront (static) + Lambda + DynamoDB (API) on blog.eva9.ai |
+| **Content Seed** | — | 2-3 posts in en + zh across 2+ categories |
+
+**Phase 1 Exit Criteria:**
+- [ ] blog.eva9.ai is live and accessible
+- [ ] Anonymous visitor can browse blog in English and Chinese
+- [ ] Anonymous visitor can register, verify email, log in
+- [ ] Registered user can submit a comment → admin can approve/reject it
+- [ ] AI auto-approves comments from verified users (no spam)
+- [ ] Visitor can submit a contact form → admin gets email
+- [ ] Admin can log in, view dashboard, see visitor stats
+- [ ] Dark mode works (system preference)
+- [ ] SEO: sitemap, OG meta, JSON-LD present
+- [ ] All infrastructure runs within AWS free tier ($0/month)
+- [ ] Source code on GitHub, CI/CD via GitHub Actions
+
+### Phase 2: Enhancements
+
+| Feature | User Story | Deliverable |
+|---------|-----------|-------------|
+| RSS Feed | F1.5 | Auto-generated RSS XML |
+| Reading Time | F1.3 | Estimated reading time on post cards and post pages |
+| hreflang | F2.5, F7.6 | hreflang tags for bilingual SEO |
+| llms.txt | F7.4 | llms.txt and llms-full.txt for AI crawlers |
+| Dark Mode - User Pref | F5.2 | Registered users can save theme preference |
+| Manual Toggle | F5.3 | Light/Dark toggle button in header |
+| Contact Page | F8.5 | Dedicated contact page with form |
+| Services Page | — | Consulting services overview page |
+| Related Posts | F1.4 | Related articles at bottom of each post |
+| Post Search | F1.6 | Pagefind static search |
+
+### Phase 3: Polish & Growth
+
+| Feature | User Story | Deliverable |
+|---------|-----------|-------------|
+| Delete Comment | F3.6 | Users can delete their own comments |
+| Canonical URLs | F7.5 | Proper canonical URL handling |
+| Video Embeds | F1.9 (extended) | YouTube/Bilibili responsive embeds |
+| Performance | — | Lighthouse 95+ audit + optimization |
+| Accessibility | — | WCAG AA compliance pass |
+| Content Growth | — | 10+ posts across all 4 categories |
+
+---
+
+## Technical Architecture (Reference)
 
 ```
-┌──────────────────────────────────────────────────┐
-│               本地 Ubuntu / Mac                    │
-│                                                    │
-│  eva9-site/                                        │
-│  ├── src/content/blog/work/    ← Markdown 文章     │
-│  ├── src/content/blog/learn/                       │
-│  ├── src/content/blog/hobby/                       │
-│  ├── src/content/blog/life/                        │
-│  ├── src/assets/images/       ← 本地图片          │
-│  ├── src/pages/               ← Astro 页面组件     │
-│  ├── lambda/                  ← Lambda 函数源码    │
-│  └── astro.config.mjs                             │
-│                                                    │
-│  所有内容在 Git → git push → GitHub               │
-└──────────────────────────────────────────────────┘
-                         │
-                    git push
-                         ▼
-┌──────────────────────────────────────────────────┐
-│            GitHub Actions (免费)                   │
-│  push → Astro build → 纯静态 HTML/CSS/JS           │
-│  → 部署到 S3                                       │
-└──────────────────────────────────────────────────┘
-                         │
-                    deploy
-                         ▼
-┌──────────────────────────────────────────────────┐
-│           AWS (你的账号，完全自控)                 │
-│                                                    │
-│  ┌─ S3 + CloudFront ──────────────────────────┐  │
-│  │  托管静态网站 (HTML/CSS/JS)                  │  │
-│  │  全球CDN，HTTPS，免费层内                     │  │
-│  └────────────────────────────────────────────┘  │
-│                                                    │
-│  ┌─ API Gateway + Lambda + DynamoDB ───────────┐  │
-│  │  POST /comment   → 提交评论                  │  │
-│  │  GET  /comments   → 获取某篇文章评论          │  │
-│  │  POST /contact    → 提交留言                  │  │
-│  │  GET  /admin/*    → 后台管理 (JWT鉴权)       │  │
-│  └────────────────────────────────────────────┘  │
-│                                                    │
-│  ┌─ DynamoDB Tables ───────────────────────────┐  │
-│  │  comments 表  — 博客评论                      │  │
-│  │  messages 表  — 访客留言                      │  │
-│  │  users 表     — 注册用户                      │  │
-│  │  visitors 表  — 访问记录 (IP/时间/页面)       │  │
-│  └────────────────────────────────────────────┘  │
-│                                                    │
-│  ┌─ CloudFront Logs ───────────────────────────┐  │
-│  │  原生访问日志 (IP/UA/referer 自动记录)        │  │
-│  └────────────────────────────────────────────┘  │
-└──────────────────────────────────────────────────┘
+blog.eva9.ai
+├── Static Content (Astro SSG → S3 + CloudFront)
+│   ├── /en/  — English pages
+│   └── /zh/  — Chinese pages
+│
+└── Dynamic API (Lambda + DynamoDB)
+    ├── /api/register     — User registration
+    ├── /api/login        — User login
+    ├── /api/verify-email — Email verification
+    ├── /api/comments     — Submit & list comments
+    ├── /api/contact      — Contact form
+    ├── /api/log-visit    — Record page visit
+    ├── /api/admin/login  — Admin login
+    ├── /api/admin/comments — Moderate comments
+    ├── /api/admin/users  — User management
+    ├── /api/admin/messages — View contact messages
+    └── /api/admin/visitors — Visitor analytics
+
+DynamoDB Tables:
+  eva9_comments  | eva9_messages | eva9_users | eva9_visitors
 ```
 
----
-
-## 1. Functional Requirements
-
-### FR-1: Multi-Category Blog
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-1.1 | 4 个博客类目：工作 (/work)、学习 (/learn)、爱好 (/hobby)、生活 (/life) | P0 |
-| FR-1.2 | 文章以 Markdown 编写，存储在 `src/content/blog/{category}/` | P0 |
-| FR-1.3 | 支持文字、图片、嵌入视频（YouTube/Bilibili）、代码块 | P0 |
-| FR-1.4 | 首页显示最新文章（跨类目） | P0 |
-| FR-1.5 | 类目页面：该类目下的文章列表 + 分页 | P0 |
-| FR-1.6 | 文章页：标题、日期、类目标签、阅读时间、作者、正文 | P0 |
-| FR-1.7 | 文章自动生成目录（TOC）（>500字时） | P1 |
-| FR-1.8 | 相关文章推荐（同类目 + 同标签） | P1 |
-| FR-1.9 | RSS feed | P1 |
-| FR-1.10 | 上一页/下一页导航 | P2 |
-
-### FR-2: Bilingual (中英双语)
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-2.1 | URL 结构：`/en/blog/...` 和 `/zh/blog/...` | P0 |
-| FR-2.2 | 语言切换按钮（自动检测浏览器语言） | P0 |
-| FR-2.3 | 作者写一种语言的文章，手动翻译后存入对应语言目录 | P0 |
-| FR-2.4 | `hreflang` 标签自动生成 | P1 |
-| FR-2.5 | 翻译文章标注链接指向原文 | P1 |
-| FR-2.6 | 界面文字（导航、按钮等）双语切换 | P1 |
-
-### FR-3: User Registration & Comments
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-3.1 | 邮箱注册（email + password，bcrypt 加密） | P0 |
-| FR-3.2 | 注册用户可评论博客文章 | P0 |
-| FR-3.3 | 评论显示：作者名、时间、内容 | P0 |
-| FR-3.4 | 评论提交后即时显示（Lambda API 实时） | P0 |
-| FR-3.5 | hCaptcha 防垃圾评论 | P1 |
-| FR-3.6 | 邮箱验证（发送验证链接） | P1 |
-| FR-3.7 | 用户可删除自己的评论 | P2 |
-
-### FR-4: Contact / Messages
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-4.1 | 联系表单：姓名、邮箱、内容 | P0 |
-| FR-4.2 | 提交后存储到 DynamoDB + 邮件通知管理员 | P0 |
-| FR-4.3 | 邮件通知使用 AWS SES（6.2万封/月永久免费） | P1 |
-| FR-4.4 | hCaptcha 防垃圾 | P1 |
-
-### FR-5: Admin Backend
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-5.1 | Admin JWT 登录（单一管理员账号，环境变量配置） | P0 |
-| FR-5.2 | 评论审核（通过/拒绝/删除） | P1 |
-| FR-5.3 | 查看/删除注册用户 | P1 |
-| FR-5.4 | 查看/回复留言 | P1 |
-| FR-5.5 | 访问统计看板（PV、访客IP、热门文章） | P1 |
-| FR-5.6 | 文章管理直接在本地 Markdown 编辑 → git push 发布 | P0 |
-
-### FR-6: GEO & SEO
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-6.1 | 全站静态生成（Astro SSG） | P0 |
-| FR-6.2 | 自动生成 XML sitemap（/en/ 和 /zh/ 分开） | P0 |
-| FR-6.3 | OpenGraph + Twitter Card meta 标签 | P0 |
-| FR-6.4 | JSON-LD 结构化数据（Article、Person、BreadcrumbList） | P0 |
-| FR-6.5 | `hreflang` 标签 | P1 |
-| FR-6.6 | `llms.txt` 和 `llms-full.txt` | P1 |
-| FR-6.7 | Canonical URL | P1 |
-| FR-6.8 | 所有图片带 alt 文本 | P1 |
-| FR-6.9 | 自动生成 meta description | P1 |
-
-### FR-7: Visitor Analytics & IP Tracking
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-7.1 | 记录每次页面访问：IP、时间、URL、User-Agent | P0 |
-| FR-7.2 | 通过 CloudFront 标准日志自动记录（免费） | P0 |
-| FR-7.3 | 或通过 Lambda + DynamoDB visitors 表主动记录 | P1 |
-| FR-7.4 | 管理后台显示：总PV、独立访客、热门页面 | P1 |
-| FR-7.5 | 显示最近访问记录（IP + 时间 + 页面） | P1 |
-
-### FR-8: Homepage & Static Pages
-
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| FR-8.1 | 首页：Hero（名字 + 一句话介绍） + 最新文章 6 篇 | P0 |
-| FR-8.2 | 首页：四个类目快捷入口卡片 | P0 |
-| FR-8.3 | About 页面：个人介绍、经历时间线、技能、照片 | P0 |
-| FR-8.4 | Services 页面：咨询服务介绍、案例、联系方式 | P1 |
-| FR-8.5 | 404 页面：搜索 + 推荐文章链接 | P2 |
-| FR-8.6 | 深色模式切换（跟随系统偏好） | P1 |
+**Stack:** Astro 5 + Tailwind CSS 4 + Markdown | Lambda (Node.js) + DynamoDB | S3 + CloudFront  
+**Cost:** $0/month (all AWS free tier)
 
 ---
 
-## 2. DynamoDB Table Design
+## Design Direction
 
-### Table: `eva9_comments`
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `post_slug` (PK) | String | 文章 slug，如 `work/building-cloud-platform` |
-| `comment_id` (SK) | String | UUID，保证唯一 |
-| `author_name` | String | 评论者名字 |
-| `author_email` | String | 评论者邮箱 |
-| `body` | String | 评论内容 |
-| `is_approved` | Bool | 默认 true（可改为审核模式） |
-| `created_at` | String | ISO 时间戳 |
-| GSI: `comment_id-index` | | 按 comment_id 单独查询 |
-
-### Table: `eva9_messages`
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `msg_id` (PK) | String | UUID |
-| `name` | String | 留言者名字 |
-| `email` | String | 留言者邮箱 |
-| `message` | String | 留言内容 |
-| `is_read` | Bool | 管理员已读标记 |
-| `created_at` | String | ISO 时间戳 |
-
-### Table: `eva9_users`
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `email` (PK) | String | 邮箱（登录用） |
-| `password_hash` | String | bcrypt 哈希 |
-| `name` | String | 显示名 |
-| `is_verified` | Bool | 邮箱是否验证 |
-| `created_at` | String | 注册时间 |
-
-### Table: `eva9_visitors`
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `visitor_id` (PK) | String | UUID |
-| `ip` | String | 访问者 IP |
-| `page_url` | String | 访问的页面 |
-| `user_agent` | String | 浏览器信息 |
-| `referer` | String | 来源 |
-| `created_at` | String | ISO 时间戳 |
-| TTL: `expires_at` | Number | 90天后自动删除（节省存储） |
-
----
-
-## 3. Lambda API Design
-
-### Endpoints
-
-| Method | Path | Auth | Function |
-|--------|------|------|----------|
-| POST | `/api/register` | — | 用户注册 |
-| POST | `/api/login` | — | 用户登录 → 返回 JWT |
-| POST | `/api/verify-email` | — | 邮箱验证 |
-| GET | `/api/comments/{post_slug}` | — | 获取文章评论列表 |
-| POST | `/api/comments` | JWT (user) | 提交评论 |
-| DELETE | `/api/comments/{comment_id}` | JWT (user/self) | 删除自己的评论 |
-| POST | `/api/contact` | — | 提交留言 |
-| POST | `/api/admin/login` | — | 管理员登录 |
-| GET | `/api/admin/comments` | JWT (admin) | 获取所有评论 (管理) |
-| PATCH | `/api/admin/comments/{id}` | JWT (admin) | 审核评论 |
-| GET | `/api/admin/messages` | JWT (admin) | 获取所有留言 |
-| GET | `/api/admin/users` | JWT (admin) | 用户列表 |
-| DELETE | `/api/admin/users/{email}` | JWT (admin) | 删除用户 |
-| GET | `/api/admin/visitors` | JWT (admin) | 访问统计 |
-| POST | `/api/log-visit` | — | 记录页面访问 |
-
-### Lambda 实现要点
-- 所有 Lambda 共享同一个 Node.js runtime
-- JWT secret 存储在 AWS Systems Manager Parameter Store（免费）
-- hCaptcha 验证在提交评论/留言/注册前执行
-- CORS 配置允许域名 `eva9.ai` 的请求
-
----
-
-## 4. Technology Stack (Final)
-
-| Layer | Technology | Cost |
-|-------|-----------|------|
-| Static Site Generator | **Astro 5** | Free |
-| CSS Framework | **Tailwind CSS 4** | Free |
-| Content | **Markdown + Git** | Free |
-| Static Hosting | **AWS S3 + CloudFront** | Free tier |
-| API Backend | **AWS Lambda** (Node.js) | Free tier |
-| Database | **AWS DynamoDB** | Free tier |
-| API Gateway | **AWS API Gateway HTTP** | Free tier |
-| Auth | **JWT** (custom, bcrypt) | Free |
-| Email | **AWS SES** | Free tier (62K/month) |
-| CAPTCHA | **hCaptcha** | Free tier |
-| CI/CD | **GitHub Actions** | Free |
-| Domain | **eva9.ai** (已有) | 已购买 |
-| SSL | **CloudFront 自带** | Free |
-
-**总月费: $0**
-
----
-
-## 5. Content Structure
+### Homepage — Modern Card Style
 
 ```
-src/content/
-├── blog/
-│   ├── en/
-│   │   ├── work/
-│   │   │   └── building-cloud-platform.md
-│   │   ├── learn/
-│   │   │   └── no-code-ml-getting-started.md
-│   │   ├── hobby/
-│   │   │   └── home-lab-setup.md
-│   │   └── life/
-│   │       └── trip-to-japan-2026.md
-│   └── zh/
-│       ├── work/
-│       ├── learn/
-│       ├── hobby/
-│       └── life/
-├── pages/
-│   ├── index.astro          # 首页
-│   ├── about.astro          # 关于我
-│   ├── services.astro       # 咨询服务
-│   ├── contact.astro        # 联系页面
-│   ├── blog/
-│   │   ├── index.astro      # 博客首页
-│   │   ├── [category].astro # 类目页
-│   │   └── [...slug].astro  # 文章页 (动态路由)
-│   └── admin/
-│       ├── login.astro      # 管理员登录
-│       └── dashboard.astro  # 管理后台
-├── components/              # Astro 组件
-├── layouts/                 # 页面布局
-└── assets/
-    └── images/              # 文章图片
+┌──────────────────────────────────────────────┐
+│  [🌙]                        [EN|ZH] [Login] │  ← Header
+│                                              │
+│  ┌─────────────────────────────────────────┐ │
+│  │  Hi, I'm Jacky Chen                     │ │  ← Hero
+│  │  20 years building cloud e-commerce.    │ │
+│  │  I write about tech, learning & life.   │ │
+│  │  [About Me]  [My Services]              │ │
+│  └─────────────────────────────────────────┘ │
+│                                              │
+│  ┌─── Work ───┐ ┌── Learn ──┐              │ │  ← Category
+│  │ Consulting  │ │ Courses &  │  ...         │ │     Cards
+│  │ & Tech      │ │ Study      │              │ │
+│  └─────────────┘ └───────────┘              │ │
+│                                              │
+│  Recent Posts                                │ │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐    │ │  ← Post Cards
+│  │ Post 1   │ │ Post 2   │ │ Post 3   │    │ │     (modern
+│  │ Category │ │ Category │ │ Category │    │ │      card grid)
+│  │ Excerpt  │ │ Excerpt  │ │ Excerpt  │    │ │
+│  │ Date · 5m│ │ Date · 8m│ │ Date · 3m│    │ │
+│  └──────────┘ └──────────┘ └──────────┘    │ │
+│                                              │
+│  ── Footer ────────────────────────────────  │
+└──────────────────────────────────────────────┘
 ```
 
----
-
-## 6. Development Phases
-
-### Phase 1: 静态网站骨架 (Week 1-2)
-- [ ] Astro 项目初始化 + i18n 路由 (`/en/` `/zh/`)
-- [ ] Tailwind CSS + 设计 tokens（颜色、字体、间距）
-- [ ] 深色模式
-- [ ] 首页布局（Hero + 最新文章网格 + 类目卡片）
-- [ ] About 页面
-- [ ] Header + Footer 组件
-- [ ] 部署到 S3 + CloudFront
-
-### Phase 2: 博客系统 (Week 2-3)
-- [ ] Astro Content Collections（4 类目）
-- [ ] 博客首页 + 类目过滤
-- [ ] 文章页模板（TOC、阅读时间、元数据）
-- [ ] 上一页/下一页
-- [ ] RSS + sitemap.xml
-- [ ] SEO meta（OG、Twitter、JSON-LD）
-- [ ] hreflang 标签
-- [ ] 首批 5-10 篇文章
-
-### Phase 3: 动态 API (Week 3-4)
-- [ ] DynamoDB 表创建（CloudFormation 或 Terraform）
-- [ ] Lambda 函数开发（register、login、comment、contact）
-- [ ] API Gateway 配置
-- [ ] hCaptcha 集成
-- [ ] JWT 认证（用户 + 管理员）
-- [ ] CORS 配置
-- [ ] 前端评论组件 + API 调用
-
-### Phase 4: 管理后台 (Week 4-5)
-- [ ] Admin 登录页面
-- [ ] 评论审核面板
-- [ ] 留言查看
-- [ ] 用户管理
-- [ ] 访问统计看板
-- [ ] 管理员 JWT（环境变量配置）
-
-### Phase 5: 访问追踪 (Week 5-6)
-- [ ] CloudFront 标准日志启用
-- [ ] Lambda log-visit 函数
-- [ ] DynamoDB visitors 表
-- [ ] 管理后台统计面板集成
-
-### Phase 6: 打磨 + 上线 (Week 6-7)
-- [ ] Lighthouse 性能优化（目标 95+）
-- [ ] 移动端响应式测试
-- [ ] 无障碍（WCAG AA）检查
-- [ ] llms.txt / SEO 审计
-- [ ] 内容补充
-- [ ] 🚀 Launch
+- **Colors:** Teal (#0D9488) primary + Amber (#F59E0B) accent — matches eva9.ai brand
+- **Typography:** Inter (body) + JetBrains Mono (code)
+- **Cards:** Subtle border + shadow, hover lift effect, responsive grid
+- **Spacing:** Generous whitespace, comfortable reading width (max 680px for post body)
 
 ---
 
-## 7. AWS 免费层验证
+## Open Decisions (Deferred)
 
-| 服务 | 免费层额度 | 个人博客预估用量 | 是否免费 |
-|------|-----------|-----------------|---------|
-| Lambda | 100万请求/月 + 40万秒计算 | ~5千请求/月 | ✅ $0 |
-| DynamoDB | 25GB存储 + 25 WCU/RCU | <1MB, <5 WCU | ✅ $0 |
-| API Gateway HTTP | 100万请求/月 (首年) | ~5千/月 | ✅ $0 |
-| S3 | 5GB存储 | <100MB | ✅ $0 |
-| CloudFront | 1TB出站 + 1千万请求 | <5GB + <1万请求 | ✅ $0 |
-| SES | 6.2万封/月 | <100封/月 | ✅ $0 |
-| GitHub Actions | 2000分钟/月 | <500分钟/月 | ✅ $0 |
-| **合计** | | | **$0/月** 🎉 |
+| # | Question | Deferred To |
+|---|----------|-------------|
+| 1 | Nested routes for categories? (`/en/blog/work/post-slug` vs `/en/work/post-slug`) | Phase 1 implementation |
+| 2 | Profile page for registered users? | Phase 2 |
+| 3 | Comment threading (nested replies)? | Phase 2 |
+| 4 | Newsletter integration? | Phase 3 |
+| 5 | CDN for images (CloudFront vs local)? | Phase 1 — local first, CDN later |
 
 ---
 
-## 8. Open Questions
-
-1. ✅ **部署方案?** → S3 + CloudFront + Lambda + DynamoDB（已确认）
-2. ❓ **域名:** eva9.ai 主域名 or blog.eva9.ai 子域名？
-3. ❓ **评论审核:** 即时发布 or 管理员审核后发布？
-4. ❓ **深色模式:** 默认跟随系统 or 手动切换？
-5. ❓ **首页设计风格:** 极简（像paulgraham.com）or 现代卡片式（像linear.app/blog）？
-
----
-
-**Status:** FINAL — Ready for Phase 1
+**Phase 1 ready for review. 确认后我立刻开始开发。**
