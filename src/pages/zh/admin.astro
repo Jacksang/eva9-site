@@ -1,6 +1,5 @@
 ---
 import AdminLayout from '@layouts/Admin.astro';
-
 const locale = 'zh';
 ---
 
@@ -8,37 +7,25 @@ const locale = 'zh';
   <section id="tab-comments" class="tab-content p-6">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-xl font-bold">评论审核队列</h2>
-      <select class="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm" id="comment-filter">
-        <option value="all">全部</option>
-        <option value="pending" selected>待审核</option>
-        <option value="approved">已通过</option>
-        <option value="rejected">已拒绝</option>
+      <select class="px-3 py-1.5 rounded-lg border" id="comment-filter">
+        <option value="all">全部</option><option value="pending" selected>待审核</option><option value="approved">已通过</option><option value="rejected">已拒绝</option>
       </select>
     </div>
-    <div id="comment-list" class="space-y-3">
-      <div class="text-center py-12 text-gray-500 dark:text-gray-400">
-        <p class="text-lg">暂无评论</p>
-        <p class="text-sm mt-2">评论将在此处显示</p>
-      </div>
-    </div>
+    <div id="comment-list" class="space-y-3"><div class="text-center py-12 text-gray-500">加载中…</div></div>
   </section>
   <section id="tab-users" class="tab-content p-6 hidden">
     <h2 class="text-xl font-bold mb-6">用户管理</h2>
-    <table class="w-full text-sm">
-      <thead><tr class="border-b border-gray-200 dark:border-gray-700 text-left"><th class="pb-3">邮箱</th><th class="pb-3">角色</th><th class="pb-3">注册时间</th><th class="pb-3">操作</th></tr></thead>
-      <tbody id="user-list"><tr><td class="py-3 text-gray-500" colspan="4">暂无用户数据</td></tr></tbody>
-    </table>
+    <table class="w-full text-sm"><thead><tr class="border-b"><th class="pb-3">邮箱</th><th class="pb-3">角色</th><th class="pb-3">注册时间</th><th class="pb-3">状态</th></tr></thead><tbody id="user-list"><tr><td class="py-3 text-gray-500" colspan="4">加载中…</td></tr></tbody></table>
   </section>
   <section id="tab-messages" class="tab-content p-6 hidden">
-    <h2 class="text-xl font-bold mb-6">联系消息</h2>
-    <div id="message-list" class="space-y-3"><div class="text-center py-12 text-gray-500">暂无消息</div></div>
+    <h2 class="text-xl font-bold mb-6">联系消息</h2><div id="message-list" class="space-y-3"><div class="text-center py-12 text-gray-500">加载中…</div></div>
   </section>
   <section id="tab-analytics" class="tab-content p-6 hidden">
     <h2 class="text-xl font-bold mb-6">数据分析</h2>
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
       {['今日浏览','独立访客','总评论','总用户'].map(label => (
-        <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-          <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">--</div>
+        <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border">
+          <div class="text-3xl font-bold text-primary-600">--</div>
           <div class="text-sm text-gray-500 mt-1">{label}</div>
         </div>
       ))}
@@ -47,19 +34,69 @@ const locale = 'zh';
 </AdminLayout>
 
 <script>
+  const API = '/api';
+  const token = localStorage.getItem('eva9-admin-token');
+  if (!token) { window.location.href = '/zh/admin/login'; }
+  const headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` };
+
   function showTab(tab: string) {
     document.querySelectorAll('.tab-content').forEach((el: any) => el.classList.add('hidden'));
     document.getElementById('tab-' + tab)?.classList.remove('hidden');
     document.querySelectorAll('.admin-nav-item').forEach((el: any) => {
-      el.classList.remove('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300');
-      el.classList.add('text-gray-600', 'dark:text-gray-400');
+      el.classList.remove('bg-primary-50','dark:bg-primary-950','text-primary-700','dark:text-primary-300');
+      el.classList.add('text-gray-600','dark:text-gray-400');
     });
     const link = document.querySelector(`[href="#${tab}"]`);
-    if (link) { link.classList.remove('text-gray-600', 'dark:text-gray-400'); link.classList.add('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300'); }
+    if (link) { link.classList.remove('text-gray-600','dark:text-gray-400'); link.classList.add('bg-primary-50','dark:bg-primary-950','text-primary-700','dark:text-primary-300'); }
     localStorage.setItem('eva9-admin-tab', tab);
+    if (tab === 'comments') loadComments();
+    if (tab === 'users') loadUsers();
+    if (tab === 'messages') loadMessages();
+    if (tab === 'analytics') loadAnalytics();
   }
+
+  async function loadComments() {
+    const status = (document.getElementById('comment-filter') as HTMLSelectElement)?.value || 'pending';
+    try {
+      const res = await fetch(`${API}/admin/comments?status=${status}`, { headers });
+      const data = await res.json();
+      const list = document.getElementById('comment-list')!;
+      if (!data.comments?.length) { list.innerHTML = '<div class="text-center py-12 text-gray-500">暂无评论</div>'; return; }
+      list.innerHTML = data.comments.map((c: any) => `<div class="p-4 rounded-xl bg-white dark:bg-gray-800 border"><div class="flex items-center justify-between mb-2"><div><span class="font-medium">${c.authorName}</span><span class="text-sm text-gray-500 ml-2">${c.authorEmail}</span></div><span class="text-xs px-2 py-0.5 rounded ${c.status==='pending'?'bg-yellow-100 text-yellow-800':'bg-green-100 text-green-800'}">${c.status}</span></div><p class="text-sm text-gray-600 mb-3">${c.content}</p><div class="text-xs text-gray-400 mb-3">On: ${c.postSlug} · ${new Date(c.createdAt).toLocaleString()}</div>${c.status==='pending'?`<div class="flex gap-2"><button onclick="moderate('${c.id}','approve')" class="px-3 py-1 text-xs rounded bg-green-600 text-white">通过</button><button onclick="moderate('${c.id}','reject')" class="px-3 py-1 text-xs rounded bg-red-600 text-white">拒绝</button></div>`:''}</div>`).join('');
+    } catch { document.getElementById('comment-list')!.innerHTML = '<div class="text-center py-12 text-gray-500">加载失败</div>'; }
+  }
+
+  async function moderate(id: string, action: string) {
+    await fetch(`${API}/admin/comments`, { method:'PUT', headers, body: JSON.stringify({ id, action }) });
+    loadComments();
+  }
+  (window as any).moderate = moderate;
+
+  async function loadUsers() {
+    try { const res = await fetch(`${API}/admin/users`, { headers }); const data = await res.json();
+      const tbody = document.getElementById('user-list')!;
+      if (!data.users?.length) { tbody.innerHTML = '<tr><td class="py-3 text-gray-500" colspan="4">暂无用户</td></tr>'; return; }
+      tbody.innerHTML = data.users.map((u: any) => `<tr class="border-b"><td class="py-2">${u.email}</td><td class="py-2"><span class="text-xs px-2 py-0.5 rounded ${u.role==='admin'?'bg-purple-100 text-purple-800':'bg-blue-100 text-blue-800'}">${u.role}</span></td><td class="py-2 text-sm text-gray-500">${new Date(u.createdAt).toLocaleDateString()}</td><td class="py-2 text-sm">${u.verified?'✅':'⏳'}</td></tr>`).join('');
+    } catch { document.getElementById('user-list')!.innerHTML = '<tr><td class="py-3 text-gray-500" colspan="4">加载失败</td></tr>'; }
+  }
+
+  async function loadMessages() {
+    try { const res = await fetch(`${API}/admin/messages`, { headers }); const data = await res.json();
+      const list = document.getElementById('message-list')!;
+      if (!data.messages?.length) { list.innerHTML = '<div class="text-center py-12 text-gray-500">暂无消息</div>'; return; }
+      list.innerHTML = data.messages.map((m: any) => `<div class="p-4 rounded-xl bg-white dark:bg-gray-800 border ${m.read?'opacity-60':''}"><div class="flex justify-between mb-2"><span class="font-medium">${m.name}</span><span class="text-xs text-gray-400">${new Date(m.createdAt).toLocaleString()}</span></div><p class="text-sm text-gray-500 mb-2">${m.email}</p><p class="text-sm">${m.message}</p></div>`).join('');
+    } catch { document.getElementById('message-list')!.innerHTML = '<div class="text-center py-12 text-gray-500">加载失败</div>'; }
+  }
+
+  async function loadAnalytics() {
+    try { const res = await fetch(`${API}/admin/visitors`, { headers }); const data = await res.json();
+      const stats = document.querySelectorAll('.text-3xl.font-bold');
+      if (stats[0]) stats[0].textContent = String(data.stats?.pageViews ?? '--');
+    } catch {}
+  }
+
+  document.getElementById('comment-filter')?.addEventListener('change', loadComments);
+  document.getElementById('admin-logout')?.addEventListener('click', () => { localStorage.removeItem('eva9-admin-token'); window.location.href = '/zh/admin/login'; });
   const savedTab = localStorage.getItem('eva9-admin-tab') || 'comments';
   showTab(savedTab);
-  const token = localStorage.getItem('eva9-admin-token');
-  if (!token) { window.location.href = '/zh/admin/login'; }
 </script>

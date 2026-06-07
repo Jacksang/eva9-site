@@ -70,5 +70,18 @@ const currentPath = Astro.url.pathname;
       <slot />
     </main>
     <Footer locale={locale} />
+
+    <!-- Visit logging (fire-and-forget) -->
+    <script>
+      (function() {
+        try {
+          fetch('/api/log-visit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ page: window.location.pathname, referrer: document.referrer }),
+          });
+        } catch { /* ignore */ }
+      })();
+    </script>
   </body>
 </html>
