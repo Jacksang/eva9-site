@@ -1,0 +1,45 @@
+---
+import Base from '@layouts/Base.astro';
+const locale = 'zh';
+---
+
+<Base title="管理员登录" description="管理员登录" locale={locale}>
+  <section class="max-w-md mx-auto px-4 py-20">
+    <h1 class="text-2xl font-bold mb-8 text-center text-gray-900 dark:text-white">管理员登录</h1>
+    <form id="admin-login-form" class="space-y-5">
+      <div>
+        <label for="email" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">邮箱</label>
+        <input type="email" id="email" name="email" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition" />
+      </div>
+      <div>
+        <label for="password" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">密码</label>
+        <input type="password" id="password" name="password" required class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition" />
+      </div>
+      <div id="login-status" class="hidden p-3 rounded-lg text-sm"></div>
+      <button type="submit" class="w-full py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors disabled:opacity-50">登录</button>
+    </form>
+  </section>
+</Base>
+
+<script>
+  const form = document.getElementById('admin-login-form') as HTMLFormElement;
+  const status = document.getElementById('login-status')!;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = form.querySelector('button')!;
+    btn.disabled = true; btn.textContent = '登录中…';
+    try {
+      const fd = new FormData(form);
+      const res = await fetch('/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: fd.get('email'), password: fd.get('password') }) });
+      if (res.ok) {
+        const data = await res.json();
+        localStorage.setItem('eva9-admin-token', data.token);
+        window.location.href = '/zh/admin';
+      } else {
+        status.textContent = '登录失败'; status.className = 'p-3 rounded-lg text-sm bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-300'; status.classList.remove('hidden');
+      }
+    } catch {
+      status.textContent = '连接失败，请重试'; status.className = 'p-3 rounded-lg text-sm bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-300'; status.classList.remove('hidden');
+    } finally { btn.disabled = false; btn.textContent = '登录'; }
+  });
+</script>

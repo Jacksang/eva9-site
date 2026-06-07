@@ -1,0 +1,100 @@
+---
+// Admin layout — different from public Base layout
+import '@styles/global.css';
+
+interface Props {
+  title: string;
+  locale: 'en' | 'zh';
+}
+
+const { title, locale = 'en' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={locale} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} — Admin — blog.eva9.ai</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <script is:inline>
+      (function() {
+        var saved = localStorage.getItem('eva9-theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (saved === 'dark' || (!saved && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
+    <!-- Top Bar -->
+    <header class="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 h-14 flex items-center justify-between px-4">
+      <div class="flex items-center gap-4">
+        <a href="/en" class="font-bold text-primary-600 dark:text-primary-400">blog.eva9.ai</a>
+        <span class="text-sm text-gray-500 dark:text-gray-400">Admin</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="admin-theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" title="Toggle theme">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+        </button>
+        <span id="admin-user" class="text-sm font-medium text-gray-700 dark:text-gray-300">Jacky Chen</span>
+        <button id="admin-logout" class="text-sm text-gray-500 dark:text-gray-400 hover:text-red-500 transition-colors">{locale === 'zh' ? '退出' : 'Logout'}</button>
+      </div>
+    </header>
+
+    <div class="flex h-[calc(100vh-3.5rem)]">
+      <!-- Sidebar -->
+      <aside class="w-56 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 p-3 flex flex-col">
+        <nav class="space-y-1 flex-1" id="admin-nav">
+          <a href="#comments" class="admin-nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium bg-primary-50 dark:bg-primary-950 text-primary-700 dark:text-primary-300">
+            <span>💬</span> {locale === 'zh' ? '评论管理' : 'Comments'}
+          </a>
+          <a href="#users" class="admin-nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <span>👥</span> {locale === 'zh' ? '用户管理' : 'Users'}
+          </a>
+          <a href="#messages" class="admin-nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <span>✉️</span> {locale === 'zh' ? '消息管理' : 'Messages'}
+          </a>
+          <a href="#analytics" class="admin-nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+            <span>📊</span> {locale === 'zh' ? '数据分析' : 'Analytics'}
+          </a>
+        </nav>
+        <div class="pt-3 border-t border-gray-200 dark:border-gray-800">
+          <a href={`/${locale}`} class="flex items-center gap-2 px-3 py-2 rounded-lg text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200">← {locale === 'zh' ? '返回网站' : 'Back to Site'}</a>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 overflow-auto">
+        <slot />
+      </main>
+    </div>
+
+    <script>
+      // Theme toggle
+      document.getElementById('admin-theme-toggle')?.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('eva9-theme', isDark ? 'dark' : 'light');
+      });
+
+      // Sidebar navigation
+      document.querySelectorAll('.admin-nav-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const tab = (item as HTMLElement).getAttribute('href')?.replace('#', '');
+          if (tab) showTab(tab);
+        });
+      });
+
+      // Logout
+      document.getElementById('admin-logout')?.addEventListener('click', () => {
+        localStorage.removeItem('eva9-admin-token');
+        window.location.href = `/${locale}/admin/login`;
+      });
+    </script>
+  </body>
+</html>

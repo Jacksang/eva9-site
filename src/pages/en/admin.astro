@@ -1,0 +1,122 @@
+---
+import AdminLayout from '@layouts/Admin.astro';
+
+const locale = (Astro.currentLocale ?? 'en') as 'en' | 'zh';
+---
+
+<AdminLayout title={locale === 'zh' ? '管理面板' : 'Dashboard'} locale={locale}>
+  <!-- Comments Tab -->
+  <section id="tab-comments" class="tab-content p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold">{locale === 'zh' ? '评论审核队列' : 'Comment Moderation Queue'}</h2>
+      <select class="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm" id="comment-filter">
+        <option value="all">{locale === 'zh' ? '全部' : 'All'}</option>
+        <option value="pending" selected>{locale === 'zh' ? '待审核' : 'Pending'}</option>
+        <option value="approved">{locale === 'zh' ? '已通过' : 'Approved'}</option>
+        <option value="rejected">{locale === 'zh' ? '已拒绝' : 'Rejected'}</option>
+      </select>
+    </div>
+
+    <div id="comment-list" class="space-y-3">
+      <div class="text-center py-12 text-gray-500 dark:text-gray-400">
+        <p class="text-lg">{locale === 'zh' ? '暂无评论' : 'No comments yet'}</p>
+        <p class="text-sm mt-2">{locale === 'zh' ? '评论将在此处显示' : 'Comments will appear here'}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Users Tab -->
+  <section id="tab-users" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">{locale === 'zh' ? '用户管理' : 'User Management'}</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-200 dark:border-gray-700 text-left">
+            <th class="pb-3 font-semibold text-gray-600 dark:text-gray-400">{locale === 'zh' ? '邮箱' : 'Email'}</th>
+            <th class="pb-3 font-semibold text-gray-600 dark:text-gray-400">{locale === 'zh' ? '角色' : 'Role'}</th>
+            <th class="pb-3 font-semibold text-gray-600 dark:text-gray-400">{locale === 'zh' ? '注册时间' : 'Registered'}</th>
+            <th class="pb-3 font-semibold text-gray-600 dark:text-gray-400">{locale === 'zh' ? '操作' : 'Actions'}</th>
+          </tr>
+        </thead>
+        <tbody id="user-list">
+          <tr class="border-b border-gray-100 dark:border-gray-800">
+            <td class="py-3 text-gray-500" colspan="4">{locale === 'zh' ? '暂无用户数据' : 'No user data available'}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Messages Tab -->
+  <section id="tab-messages" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">{locale === 'zh' ? '联系消息' : 'Contact Messages'}</h2>
+    <div class="space-y-3" id="message-list">
+      <div class="text-center py-12 text-gray-500 dark:text-gray-400">
+        <p class="text-lg">{locale === 'zh' ? '暂无消息' : 'No messages yet'}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Analytics Tab -->
+  <section id="tab-analytics" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">{locale === 'zh' ? '数据分析' : 'Analytics'}</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400" id="stat-pageviews">--</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{locale === 'zh' ? '今日浏览' : 'Page Views Today'}</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400" id="stat-visitors">--</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{locale === 'zh' ? '独立访客' : 'Unique Visitors'}</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400" id="stat-comments">--</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{locale === 'zh' ? '总评论' : 'Total Comments'}</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div class="text-3xl font-bold text-primary-600 dark:text-primary-400" id="stat-users">--</div>
+        <div class="text-sm text-gray-500 dark:text-gray-400 mt-1">{locale === 'zh' ? '总用户' : 'Total Users'}</div>
+      </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <h3 class="font-semibold mb-3 text-sm text-gray-600 dark:text-gray-400">{locale === 'zh' ? '热门页面' : 'Top Pages'}</h3>
+        <div id="top-pages" class="text-sm text-gray-500 dark:text-gray-400">{locale === 'zh' ? '暂无数据' : 'No data yet'}</div>
+      </div>
+      <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <h3 class="font-semibold mb-3 text-sm text-gray-600 dark:text-gray-400">{locale === 'zh' ? '最近访客' : 'Recent Visitors'}</h3>
+        <div id="recent-visitors" class="text-sm text-gray-500 dark:text-gray-400">{locale === 'zh' ? '暂无数据' : 'No data yet'}</div>
+      </div>
+    </div>
+  </section>
+</AdminLayout>
+
+<script>
+  // Tab switching
+  function showTab(tab: string) {
+    document.querySelectorAll('.tab-content').forEach((el: any) => el.classList.add('hidden'));
+    document.getElementById('tab-' + tab)?.classList.remove('hidden');
+
+    document.querySelectorAll('.admin-nav-item').forEach((el: any) => {
+      el.classList.remove('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300');
+      el.classList.add('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+    });
+    const link = document.querySelector(`[href="#${tab}"]`);
+    if (link) {
+      link.classList.remove('text-gray-600', 'dark:text-gray-400', 'hover:bg-gray-100', 'dark:hover:bg-gray-800');
+      link.classList.add('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300');
+    }
+    localStorage.setItem('eva9-admin-tab', tab);
+  }
+
+  // Restore last tab
+  const savedTab = localStorage.getItem('eva9-admin-tab') || 'comments';
+  showTab(savedTab);
+
+  // Auth guard: check for admin token
+  const token = localStorage.getItem('eva9-admin-token');
+  if (!token) {
+    window.location.href = `/${'en'}/admin/login`;
+  }
+</script>

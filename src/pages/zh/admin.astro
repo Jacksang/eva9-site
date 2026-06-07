@@ -1,0 +1,65 @@
+---
+import AdminLayout from '@layouts/Admin.astro';
+
+const locale = 'zh';
+---
+
+<AdminLayout title="管理面板" locale={locale}>
+  <section id="tab-comments" class="tab-content p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-xl font-bold">评论审核队列</h2>
+      <select class="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm" id="comment-filter">
+        <option value="all">全部</option>
+        <option value="pending" selected>待审核</option>
+        <option value="approved">已通过</option>
+        <option value="rejected">已拒绝</option>
+      </select>
+    </div>
+    <div id="comment-list" class="space-y-3">
+      <div class="text-center py-12 text-gray-500 dark:text-gray-400">
+        <p class="text-lg">暂无评论</p>
+        <p class="text-sm mt-2">评论将在此处显示</p>
+      </div>
+    </div>
+  </section>
+  <section id="tab-users" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">用户管理</h2>
+    <table class="w-full text-sm">
+      <thead><tr class="border-b border-gray-200 dark:border-gray-700 text-left"><th class="pb-3">邮箱</th><th class="pb-3">角色</th><th class="pb-3">注册时间</th><th class="pb-3">操作</th></tr></thead>
+      <tbody id="user-list"><tr><td class="py-3 text-gray-500" colspan="4">暂无用户数据</td></tr></tbody>
+    </table>
+  </section>
+  <section id="tab-messages" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">联系消息</h2>
+    <div id="message-list" class="space-y-3"><div class="text-center py-12 text-gray-500">暂无消息</div></div>
+  </section>
+  <section id="tab-analytics" class="tab-content p-6 hidden">
+    <h2 class="text-xl font-bold mb-6">数据分析</h2>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {['今日浏览','独立访客','总评论','总用户'].map(label => (
+        <div class="p-4 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+          <div class="text-3xl font-bold text-primary-600 dark:text-primary-400">--</div>
+          <div class="text-sm text-gray-500 mt-1">{label}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+</AdminLayout>
+
+<script>
+  function showTab(tab: string) {
+    document.querySelectorAll('.tab-content').forEach((el: any) => el.classList.add('hidden'));
+    document.getElementById('tab-' + tab)?.classList.remove('hidden');
+    document.querySelectorAll('.admin-nav-item').forEach((el: any) => {
+      el.classList.remove('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300');
+      el.classList.add('text-gray-600', 'dark:text-gray-400');
+    });
+    const link = document.querySelector(`[href="#${tab}"]`);
+    if (link) { link.classList.remove('text-gray-600', 'dark:text-gray-400'); link.classList.add('bg-primary-50', 'dark:bg-primary-950', 'text-primary-700', 'dark:text-primary-300'); }
+    localStorage.setItem('eva9-admin-tab', tab);
+  }
+  const savedTab = localStorage.getItem('eva9-admin-tab') || 'comments';
+  showTab(savedTab);
+  const token = localStorage.getItem('eva9-admin-token');
+  if (!token) { window.location.href = '/zh/admin/login'; }
+</script>

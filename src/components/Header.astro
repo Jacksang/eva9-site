@@ -48,8 +48,14 @@ const navItems = [
       <ThemeToggle />
       <LangSwitcher locale={locale} currentPath={currentPath} />
       <a
-        href={`/${locale}/admin/login`}
-        class="hidden sm:inline-flex ml-2 px-3 py-1.5 text-sm rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors font-medium"
+        href={`/${locale}/login`}
+        class="hidden sm:inline-flex ml-2 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-400 transition-colors font-medium"
+      >
+        {t('nav.login', locale)}
+      </a>
+      <a
+        href={`/${locale}/admin`}
+        class="hidden sm:inline-flex ml-1 px-3 py-1.5 text-sm rounded-lg bg-primary-600 text-white hover:bg-primary-700 transition-colors font-medium"
       >
         {t('nav.admin', locale)}
       </a>
