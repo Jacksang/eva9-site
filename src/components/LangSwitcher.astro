@@ -1,0 +1,22 @@
+---
+import { localeLabel, type Locale } from '@lib/i18n';
+
+interface Props {
+  locale: Locale;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const altLocale: Locale = locale === 'en' ? 'zh' : 'en';
+
+// Rewrite path for alternate locale
+const altPath = currentPath.replace(`/${locale}`, `/${altLocale}`);
+---
+
+<a
+  href={altPath}
+  class="px-2 py-1.5 text-xs font-medium rounded-lg border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:border-primary-400 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+  title={`Switch to ${localeLabel(altLocale)}`}
+>
+  {localeLabel(altLocale)}
+</a>

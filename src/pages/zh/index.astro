@@ -1,0 +1,90 @@
+---
+import Base from '@layouts/Base.astro';
+import PostCard from '@components/PostCard.astro';
+import { t } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'zh') as 'en' | 'zh';
+
+const enPosts = Object.values(import.meta.glob('../content/blog/en/*.md', { eager: true })) as any[];
+const zhPosts = Object.values(import.meta.glob('../content/blog/zh/*.md', { eager: true })) as any[];
+const posts = locale === 'en' ? enPosts : zhPosts;
+const sortedPosts = posts
+  .sort((a, b) => (b.frontmatter.pubDate?.getTime?.() ?? 0) - (a.frontmatter.pubDate?.getTime?.() ?? 0))
+  .slice(0, 6);
+
+const categories = [
+  { key: 'category.work', icon: '💼', descEn: 'Consulting & Tech', descZh: '咨询与技术', slug: 'work' },
+  { key: 'category.learn', icon: '📚', descEn: 'Courses & Study', descZh: '课程与学习', slug: 'learn' },
+  { key: 'category.hobby', icon: '🎨', descEn: 'Creative Projects', descZh: '创意项目', slug: 'hobby' },
+  { key: 'category.life', icon: '🌿', descEn: 'Reflections & Stories', descZh: '思考与故事', slug: 'life' },
+];
+---
+
+<Base
+  title="Jacky Chen"
+  description={locale === 'zh' ? '云端电商架构师的个人博客' : 'Personal blog of a cloud e-commerce architect'}
+  locale={locale}
+  ogType="website"
+>
+  <section class="py-20 px-4 text-center">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-5xl font-bold mb-4 text-gray-900 dark:text-white">
+        {t('hero.title', locale)}
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+        {t('hero.subtitle', locale)}
+      </p>
+      <div class="flex gap-4 justify-center">
+        <a href={`/${locale}/about`} class="px-6 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors">
+          {t('hero.about', locale)}
+        </a>
+        <a href={`/${locale}/contact`} class="px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:border-primary-400 dark:hover:border-primary-500 hover:text-primary-600 dark:hover:text-primary-400 transition-colors">
+          {t('hero.services', locale)}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-4 pb-16">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {categories.map(cat => (
+        <a href={`/${locale}/blog?category=${cat.slug}`} class="group p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all">
+          <div class="text-3xl mb-3">{cat.icon}</div>
+          <h3 class="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+            {t(cat.key, locale)}
+          </h3>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            {locale === 'zh' ? cat.descZh : cat.descEn}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="max-w-6xl mx-auto px-4 pb-20">
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white">{t('blog.recent', locale)}</h2>
+      <a href={`/${locale}/blog`} class="text-primary-600 dark:text-primary-400 hover:underline font-medium text-sm">
+        {t('blog.read_more', locale)}
+      </a>
+    </div>
+
+    {sortedPosts.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedPosts.map((post: any) => (
+          <PostCard
+            title={post.frontmatter.title}
+            slug={post.frontmatter.slug}
+            category={post.frontmatter.category}
+            pubDate={post.frontmatter.pubDate}
+            excerpt={post.frontmatter.excerpt}
+            readingTime={post.frontmatter.readingTime}
+            locale={locale}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="text-gray-500 dark:text-gray-400">{t('blog.no_posts', locale)}</p>
+    )}
+  </section>
+</Base>

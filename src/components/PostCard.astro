@@ -1,0 +1,55 @@
+---
+import type { Locale } from '@lib/i18n';
+
+export interface Props {
+  title: string;
+  slug: string;
+  category: string;
+  pubDate: Date;
+  excerpt: string;
+  readingTime?: number;
+  locale: Locale;
+}
+
+const { title, slug, category, pubDate, excerpt, readingTime, locale } = Astro.props;
+
+const categoryLabels: Record<string, string> = {
+  work: 'Work',
+  learn: 'Learn',
+  hobby: 'Hobby',
+  life: 'Life',
+};
+const zhCategoryLabels: Record<string, string> = {
+  work: '工作',
+  learn: '学习',
+  hobby: '爱好',
+  life: '生活',
+};
+---
+
+<a
+  href={`/${locale}/blog/${slug}`}
+  class="group block p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-lg transition-all"
+>
+  <div class="flex items-center gap-2 mb-3">
+    <span class="text-xs font-medium px-2 py-0.5 rounded-full bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300">
+      {locale === 'zh' ? (zhCategoryLabels[category] ?? category) : (categoryLabels[category] ?? category)}
+    </span>
+    {readingTime && (
+      <span class="text-xs text-gray-400 dark:text-gray-500">{readingTime} min read</span>
+    )}
+  </div>
+  <h3 class="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-2 line-clamp-2">
+    {title}
+  </h3>
+  <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-3">
+    {excerpt}
+  </p>
+  <time class="text-xs text-gray-400 dark:text-gray-500" datetime={pubDate.toISOString()}>
+    {pubDate.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    })}
+  </time>
+</a>

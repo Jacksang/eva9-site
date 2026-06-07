@@ -1,0 +1,56 @@
+---
+import Base from '@layouts/Base.astro';
+import PostCard from '@components/PostCard.astro';
+import { t } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'zh') as 'en' | 'zh';
+const selectedCategory = Astro.url.searchParams.get('category');
+
+const enBlogPosts = Object.values(import.meta.glob('../content/blog/en/*.md', { eager: true })) as any[];
+const zhBlogPosts = Object.values(import.meta.glob('../content/blog/zh/*.md', { eager: true })) as any[];
+const allPosts = (locale === 'en' ? enBlogPosts : zhBlogPosts)
+  .filter((p: any) => !selectedCategory || p.frontmatter.category === selectedCategory)
+  .sort((a, b) => (b.frontmatter.pubDate?.getTime?.() ?? 0) - (a.frontmatter.pubDate?.getTime?.() ?? 0));
+
+const categorySlugs = ['work', 'learn', 'hobby', 'life'];
+---
+
+<Base
+  title={t('nav.blog', locale)}
+  description={locale === 'zh' ? '浏览所有博客文章' : 'Browse all blog posts'}
+  locale={locale}
+>
+  <section class="max-w-6xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">{t('nav.blog', locale)}</h1>
+
+    <div class="flex gap-2 mb-8 flex-wrap">
+      <a href={`/${locale}/blog`} class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${!selectedCategory ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>全部</a>
+      {categorySlugs.map(cat => (
+        <a href={`/${locale}/blog?category=${cat}`} class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedCategory === cat ? 'bg-primary-600 text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}`}>
+          {t(`category.${cat}`, locale)}
+        </a>
+      ))}
+    </div>
+
+    {allPosts.length > 0 ? (
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allPosts.map((post: any) => (
+          <PostCard
+            title={post.frontmatter.title}
+            slug={post.frontmatter.slug}
+            category={post.frontmatter.category}
+            pubDate={post.frontmatter.pubDate}
+            excerpt={post.frontmatter.excerpt}
+            readingTime={post.frontmatter.readingTime}
+            locale={locale}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-20">
+        <p class="text-gray-500 dark:text-gray-400 text-lg">{t('blog.no_posts', locale)}</p>
+        <a href={`/${locale}/blog`} class="text-primary-600 dark:text-primary-400 hover:underline mt-2 inline-block">查看全部文章</a>
+      </div>
+    )}
+  </section>
+</Base>

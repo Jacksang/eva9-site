@@ -1,0 +1,42 @@
+---
+import Base from '@layouts/Base.astro';
+import type { Locale } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'en') as Locale;
+---
+
+<Base
+  title={locale === 'zh' ? '关于' : 'About'}
+  description={locale === 'zh' ? '了解 Jacky Chen 的背景与经历' : 'Learn about Jacky Chen'}
+  locale={locale}
+>
+  <section class="prose-container py-12">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+      {locale === 'zh' ? '关于我' : 'About Me'}
+    </h1>
+
+    <div class="prose-blog">
+      <p>Hi, I'm <strong>Jacky Chen</strong> — a cloud-native software engineer and CTO with 20+ years of experience building web applications at scale.</p>
+
+      <h2>What I Do</h2>
+      <p>I specialize in <strong>cloud-native e-commerce platforms</strong>, mobile payment systems, marketplace architectures, and loyalty programs. I've built systems from scratch on AWS and Alibaba Cloud, serving both Chinese and global markets.</p>
+
+      <h2>My Journey</h2>
+      <p>Over two decades, I've led engineering teams, defined technical strategy, and shipped products used by millions. Today, I consult, build, and write about what I've learned.</p>
+
+      <h2>This Blog</h2>
+      <p>blog.eva9.ai is where I share insights across four areas:</p>
+      <ul>
+        <li><strong>Work</strong> — Consulting, architecture, system design</li>
+        <li><strong>Learn</strong> — ML, data science, new technologies</li>
+        <li><strong>Hobby</strong> — Side projects, tools, creative experiments</li>
+        <li><strong>Life</strong> — Reflections, lessons, human side of tech</li>
+      </ul>
+
+      <p>Everything here is written in both English and Chinese — because good ideas deserve to cross language barriers.</p>
+
+      <h2>Get in Touch</h2>
+      <p>If you're interested in working together or just want to say hi, <a href={`/${locale}/contact`}>reach out via the contact form</a>.</p>
+    </div>
+  </section>
+</Base>

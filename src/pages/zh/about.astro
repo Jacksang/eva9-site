@@ -1,0 +1,40 @@
+---
+import Base from '@layouts/Base.astro';
+import type { Locale } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'zh') as Locale;
+---
+
+<Base
+  title={locale === 'zh' ? '关于' : 'About'}
+  description={locale === 'zh' ? '了解 Jacky Chen 的背景与经历' : 'Learn about Jacky Chen'}
+  locale={locale}
+>
+  <section class="prose-container py-12">
+    <h1 class="text-3xl font-bold mb-8 text-gray-900 dark:text-white">关于我</h1>
+
+    <div class="prose-blog">
+      <p>你好，我是 <strong>Jacky Chen</strong> —— 一位拥有 20 多年经验的云端软件工程师和 CTO，专注于大规模 Web 应用的构建。</p>
+
+      <h2>我的专长</h2>
+      <p>我专注于<strong>云端电商平台</strong>、移动支付系统、市场架构和忠诚度计划。我在 AWS 和阿里云上从零构建系统，服务中国和全球市场。</p>
+
+      <h2>我的旅程</h2>
+      <p>二十多年来，我领导工程团队、定义技术策略、交付了数百万用户使用的产品。现在，我提供咨询、构建产品，并分享我学到的一切。</p>
+
+      <h2>关于这个博客</h2>
+      <p>blog.eva9.ai 是我在四个领域分享见解的地方：</p>
+      <ul>
+        <li><strong>工作</strong> — 咨询、架构、系统设计</li>
+        <li><strong>学习</strong> — 机器学习、数据科学、新技术</li>
+        <li><strong>爱好</strong> — 副项目、工具、创意实验</li>
+        <li><strong>生活</strong> — 思考、经验、技术的人文面</li>
+      </ul>
+
+      <p>这里的所有内容都有中英双语版本 —— 因为好想法值得跨越语言障碍。</p>
+
+      <h2>联系我</h2>
+      <p>如果你有兴趣合作或只是想打个招呼，<a href={`/${locale}/contact`}>请通过联系表单与我联系</a>。</p>
+    </div>
+  </section>
+</Base>
