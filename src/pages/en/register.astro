@@ -27,6 +27,11 @@ const locale = (Astro.currentLocale ?? 'en') as 'en' | 'zh';
           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition" />
         <p class="text-xs text-gray-400 mt-1">{locale === 'zh' ? '至少8个字符' : 'At least 8 characters'}</p>
       </div>
+      <div>
+        <label for="confirmPassword" class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">{locale === 'zh' ? '确认密码' : 'Confirm Password'}</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required minlength="8"
+          class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 outline-none transition" />
+      </div>
 
       <div id="reg-status" class="hidden p-3 rounded-lg text-sm"></div>
 
@@ -48,6 +53,14 @@ const locale = (Astro.currentLocale ?? 'en') as 'en' | 'zh';
   const status = document.getElementById('reg-status')!;
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const confirmPassword = (document.getElementById('confirmPassword') as HTMLInputElement).value;
+    if (password !== confirmPassword) {
+      status.textContent = 'Passwords do not match';
+      status.className = 'p-3 rounded-lg text-sm bg-red-50 dark:bg-red-900 text-red-700 dark:text-red-300';
+      status.classList.remove('hidden');
+      return;
+    }
     const btn = form.querySelector('button')!;
     btn.disabled = true; btn.textContent = 'Registering…';
     try {

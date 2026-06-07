@@ -53,6 +53,15 @@ const currentPath = Astro.url.pathname;
       <meta property="article:published_time" content={new Date(publishedDate).toISOString()} />
     )}
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href={new URL(currentPath, Astro.site).href} />
+    <!-- Hreflang -->
+    <link rel="alternate" hreflang={locale === 'zh' ? 'zh' : 'en'} href={new URL(currentPath, Astro.site).href} />
+    <link rel="alternate" hreflang={locale === 'zh' ? 'en' : 'zh'} href={new URL(currentPath.replace(/^\/(en|zh)/, locale === 'zh' ? '/en' : '/zh'), Astro.site).href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(currentPath.replace(/^\/(en|zh)/, '/en'), Astro.site).href} />
+    <!-- RSS Auto-discovery -->
+    <link rel="alternate" type="application/rss+xml" title="blog.eva9.ai" href={new URL('/rss.xml', Astro.site).href} />
+
     <!-- Theme detection (prevents flash) -->
     <script is:inline>
       (function() {

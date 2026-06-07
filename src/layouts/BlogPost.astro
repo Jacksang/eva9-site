@@ -49,4 +49,14 @@ const { title, description, locale, ogImage, publishedDate, category, readingTim
       <slot />
     </div>
   </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": `https://blog.eva9.ai/${locale}` },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": `https://blog.eva9.ai/${locale}/blog` },
+      { "@type": "ListItem", "position": 3, "name": title }
+    ]
+  })} />
 </Base>

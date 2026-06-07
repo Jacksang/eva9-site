@@ -48,6 +48,12 @@ const navItems = [
       <ThemeToggle />
       <LangSwitcher locale={locale} currentPath={currentPath} />
       <a
+        href={`/${locale}/register`}
+        class="hidden sm:inline-flex ml-2 px-3 py-1.5 text-sm rounded-lg text-primary-600 dark:text-primary-400 hover:bg-primary-50 dark:hover:bg-primary-950 transition-colors font-medium"
+      >
+        {t('nav.register', locale)}
+      </a>
+      <a
         href={`/${locale}/login`}
         class="hidden sm:inline-flex ml-2 px-3 py-1.5 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-primary-400 transition-colors font-medium"
       >

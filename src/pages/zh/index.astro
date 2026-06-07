@@ -26,6 +26,18 @@ const categories = [
   locale={locale}
   ogType="website"
 >
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Jacky Chen",
+    "url": "https://blog.eva9.ai",
+    "jobTitle": locale === 'zh' ? '云端电商架构师' : 'Cloud E-Commerce Architect',
+    "sameAs": [
+      "https://github.com/Jacksang",
+      "https://linkedin.com/in/jackychen"
+    ]
+  })} />
+
   <section class="py-20 px-4 text-center">
     <div class="max-w-3xl mx-auto">
       <h1 class="text-5xl font-bold mb-4 text-gray-900 dark:text-white">

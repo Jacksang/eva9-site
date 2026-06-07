@@ -20,6 +20,15 @@ const { title, locale = 'en' } = Astro.props;
     <meta name="robots" content="noindex, nofollow" />
     <script is:inline>
       (function() {
+        var token = localStorage.getItem('eva9-admin-token');
+        if (!token) {
+          var locale = document.documentElement.lang || 'en';
+          window.location.replace('/' + locale + '/admin/login');
+        }
+      })();
+    </script>
+    <script is:inline>
+      (function() {
         var saved = localStorage.getItem('eva9-theme');
         var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         if (saved === 'dark' || (!saved && prefersDark)) {
