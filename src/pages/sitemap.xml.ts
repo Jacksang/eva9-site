@@ -4,7 +4,7 @@ export const GET: APIRoute = async () => {
   const site = 'https://blog.eva9.ai';
   const today = new Date().toISOString().split('T')[0];
 
-  const staticPages = ['', '/blog', '/about', '/contact'];
+  const staticPages = ['', '/blog', '/about', '/contact', '/login', '/register'];
   const urls: string[] = [];
 
   for (const locale of ['en', 'zh']) {
