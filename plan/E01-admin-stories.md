@@ -109,8 +109,8 @@ As an **Admin**, I need to **publish a blog post by writing a Markdown file and 
 As an **Admin**, I need to **see which comments were auto-approved or auto-rejected by the AI moderation system** so that **I can override AI decisions if needed and monitor the system's accuracy**.
 
 **Acceptance Criteria:**
-- AC-01: In the comment moderation queue, auto-approved and auto-rejected comments show an "AI" badge indicating the AI made the decision
+- AC-01: In the comment moderation queue, comments evaluated by AI show an "AI" badge indicating the AI made the decision
 - AC-02: Admin can override any AI decision by manually approving or rejecting
-- AC-03: The AI moderation reason is visible (e.g., "Auto-rejected: contains link" or "Auto-approved: verified user, clean content")
+- AC-03: The AI moderation reason is visible (e.g., "Auto-flagged: contains link — held for review" or "Auto-approved: verified user, clean content")
 - AC-04: AI decisions are logged — admin can see the decision timestamp and reason
 - AC-05: Comments auto-rejected by AI still appear in the queue (not silently deleted)

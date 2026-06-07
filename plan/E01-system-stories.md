@@ -86,3 +86,18 @@ As the **System**, I need to **automatically build and deploy the site on every 
 - AC-04: Deploy takes under 2 minutes from push to live
 - AC-05: S3 bucket is configured for static website hosting with CloudFront as CDN
 - AC-06: CloudFront distribution has custom domain `blog.eva9.ai` with SSL certificate
+
+---
+
+## US-E01-SYSTEM-07: Provision AWS infrastructure
+
+As the **System**, I need to **create the DynamoDB tables, Lambda functions, API Gateway, IAM roles, and S3 bucket** so that **the application has all cloud resources it needs to run**.
+
+**Acceptance Criteria:**
+- AC-01: Infrastructure is defined as code (CloudFormation or CDK) in the `infra/` directory
+- AC-02: Running `cdk deploy` or `aws cloudformation deploy` creates: `eva9_comments`, `eva9_messages`, `eva9_users`, `eva9_visitors` DynamoDB tables
+- AC-03: Lambda functions for `/api/*` endpoints are created with appropriate IAM roles (DynamoDB read/write + SES send)
+- AC-04: API Gateway HTTP API is created with routes mapped to Lambda functions and CORS configured
+- AC-05: S3 bucket is created for static hosting with CloudFront distribution on `blog.eva9.ai`
+- AC-06: All resources stay within AWS free tier limits
+- AC-07: Infrastructure can be torn down and recreated with a single command

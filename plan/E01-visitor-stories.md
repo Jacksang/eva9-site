@@ -12,7 +12,7 @@ As an **Anonymous Visitor**, I need to **browse blog posts grouped by category (
 **Acceptance Criteria:**
 - AC-01: Blog index page loads in both `/en/` and `/zh/` with all 4 category tabs visible
 - AC-02: Each category tab filters posts to show only that category's articles
-- AC-03: Each post card displays: title, date, category badge, excerpt (first 200 chars)
+- AC-03: Each post card displays: title, date, category badge, reading time, excerpt (first 200 chars)
 - AC-04: If a category has no posts, an empty state message is shown ("No posts yet in this category")
 - AC-05: Category filter updates the URL (e.g., `/en/blog?category=work`)
 
@@ -41,7 +41,7 @@ As an **Anonymous Visitor**, I need to **switch between English and Chinese** so
 - AC-01: Language switcher is visible in the header on every page
 - AC-02: Switching language changes URL from `/en/...` to `/zh/...` and reloads the equivalent page
 - AC-03: If a post doesn't have a translation yet, a fallback page shows "Translation not yet available" with a link to the original
-- AC-04: First visit auto-detects browser's `Accept-Language` header and redirects to the matching language
+- AC-04: First visit checks `navigator.language` (client-side JS) and redirects to the matching language. A brief flash may occur before redirect.
 - AC-05: Language preference is remembered for the current session via cookie or localStorage
 
 ---
@@ -141,3 +141,32 @@ As an **Anonymous Visitor**, I need to **submit a contact form** so that **I can
 - AC-05: Successful submission shows "Message sent — I'll get back to you soon" toast
 - AC-06: Admin receives an email notification via AWS SES for each submission
 - AC-07: Form submission rate-limited to 5 per hour per IP to prevent abuse
+
+---
+
+## US-E01-VISITOR-11: Reset forgotten password
+
+As an **Anonymous Visitor**, I need to **reset my password if I forget it** so that **I can regain access to my account without losing my comment history**.
+
+**Acceptance Criteria:**
+- AC-01: "Forgot password?" link is visible on the login form
+- AC-02: Clicking the link shows a form: enter email → submit → "If an account with that email exists, a reset link has been sent" (generic message, no email enumeration)
+- AC-03: System sends a password reset email via AWS SES with a unique reset token (valid for 1 hour)
+- AC-04: Clicking the reset link opens a "Set New Password" page: new password + confirm password
+- AC-05: Password must meet the same criteria as registration (min 8 chars)
+- AC-06: Successful reset shows "Password updated — you can now log in" with a link to the login page
+- AC-07: Expired or invalid reset token shows "Reset link expired or invalid — request a new one"
+
+---
+
+## US-E01-VISITOR-12: Navigate between posts
+
+As an **Anonymous Visitor**, I need to **navigate between previous and next posts from a blog post page** so that **I can continue reading related content without returning to the blog index**.
+
+**Acceptance Criteria:**
+- AC-01: Bottom of each blog post shows "← Previous Post" and "Next Post →" links
+- AC-02: Previous/next posts are from the same category (Work posts link to other Work posts)
+- AC-03: First post in a category shows no "Previous Post" link
+- AC-04: Last post in a category shows no "Next Post" link
+- AC-05: Links display the post title (not just "Previous" / "Next")
+
