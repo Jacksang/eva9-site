@@ -1,0 +1,16 @@
+---
+import BlogPostLayout from '@layouts/BlogPost.astro';
+import { generateBlogPostJSONLD } from '@lib/seo';
+
+const post = (await import('../../../content/blog/zh/cloud-native-ecommerce-playbook-zh.md')) as any;
+const { frontmatter, compiledContent } = post;
+const { title, excerpt, pubDate, category, readingTime, ogImage } = frontmatter;
+
+const currentURL = new URL('/zh/blog/cloud-native-ecommerce-playbook', Astro.site).href;
+const jsonld = generateBlogPostJSONLD({ title, description: excerpt, image: ogImage, url: currentURL, publishedDate: pubDate, authorName: 'Jacky Chen' });
+---
+
+<BlogPostLayout title={title} description={excerpt} locale="zh" ogImage={ogImage} publishedDate={pubDate} category={category} readingTime={readingTime ?? 7}>
+  <script type="application/ld+json" is:inline set:html={jsonld} />
+  {compiledContent}
+</BlogPostLayout>

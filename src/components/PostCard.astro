@@ -45,8 +45,8 @@ const zhCategoryLabels: Record<string, string> = {
   <p class="text-sm text-gray-500 dark:text-gray-400 line-clamp-3 mb-3">
     {excerpt}
   </p>
-  <time class="text-xs text-gray-400 dark:text-gray-500" datetime={pubDate.toISOString()}>
-    {pubDate.toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
+  <time class="text-xs text-gray-400 dark:text-gray-500" datetime={new Date(pubDate).toISOString()}>
+    {new Date(pubDate).toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

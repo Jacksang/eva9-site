@@ -50,7 +50,7 @@ const currentPath = Astro.url.pathname;
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     {publishedDate && (
-      <meta property="article:published_time" content={publishedDate.toISOString()} />
+      <meta property="article:published_time" content={new Date(publishedDate).toISOString()} />
     )}
 
     <!-- Theme detection (prevents flash) -->

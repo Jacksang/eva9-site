@@ -1,0 +1,17 @@
+---
+import BlogPostLayout from '@layouts/BlogPost.astro';
+import { generateBlogPostJSONLD } from '@lib/seo';
+
+// Direct import of the markdown file
+const post = (await import('../../../content/blog/en/why-i-built-this-blog.md')) as any;
+const { frontmatter, compiledContent } = post;
+const { title, excerpt, pubDate, category, readingTime, ogImage } = frontmatter;
+
+const currentURL = new URL('/en/blog/why-i-built-this-blog', Astro.site).href;
+const jsonld = generateBlogPostJSONLD({ title, description: excerpt, image: ogImage, url: currentURL, publishedDate: pubDate, authorName: 'Jacky Chen' });
+---
+
+<BlogPostLayout title={title} description={excerpt} locale="en" ogImage={ogImage} publishedDate={pubDate} category={category} readingTime={readingTime ?? 5}>
+  <script type="application/ld+json" is:inline set:html={jsonld} />
+  {compiledContent}
+</BlogPostLayout>

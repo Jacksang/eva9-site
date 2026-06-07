@@ -55,7 +55,7 @@ export function generateSEOMeta(props: SEOProps): string {
 
   // Article-specific
   if (ogType === 'article' && publishedDate) {
-    tags.push(`<meta property="article:published_time" content="${publishedDate.toISOString()}">`);
+    tags.push(`<meta property="article:published_time" content="${new Date(publishedDate).toISOString()}">`);
   }
 
   // Canonical
@@ -93,7 +93,7 @@ export function generateBlogPostJSONLD(props: {
     description: props.description,
     image: props.image ?? DEFAULT_IMAGE,
     url: props.url,
-    datePublished: props.publishedDate.toISOString(),
+    datePublished: new Date(props.publishedDate).toISOString(),
     author: {
       '@type': 'Person',
       name: props.authorName,

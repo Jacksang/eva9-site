@@ -6,8 +6,8 @@ import { t } from '@lib/i18n';
 const locale = (Astro.currentLocale ?? 'zh') as 'en' | 'zh';
 const selectedCategory = Astro.url.searchParams.get('category');
 
-const enBlogPosts = Object.values(import.meta.glob('../content/blog/en/*.md', { eager: true })) as any[];
-const zhBlogPosts = Object.values(import.meta.glob('../content/blog/zh/*.md', { eager: true })) as any[];
+const enBlogPosts = Object.values(import.meta.glob('../../content/blog/en/*.md', { eager: true })) as any[];
+const zhBlogPosts = Object.values(import.meta.glob('../../content/blog/zh/*.md', { eager: true })) as any[];
 const allPosts = (locale === 'en' ? enBlogPosts : zhBlogPosts)
   .filter((p: any) => !selectedCategory || p.frontmatter.category === selectedCategory)
   .sort((a, b) => (b.frontmatter.pubDate?.getTime?.() ?? 0) - (a.frontmatter.pubDate?.getTime?.() ?? 0));
