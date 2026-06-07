@@ -1,0 +1,202 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Timeout: 10
+    MemorySize: 256
+    Environment:
+      Variables:
+        AWS_REGION: !Ref AWS::Region
+        TABLE_PREFIX: eva9
+        JWT_SECRET: !Ref JwtSecret
+        ADMIN_JWT_SECRET: !Ref AdminJwtSecret
+
+Parameters:
+  JwtSecret:
+    Type: String
+    NoEcho: true
+    Description: JWT signing secret for users
+  AdminJwtSecret:
+    Type: String
+    NoEcho: true
+    Description: JWT signing secret for admin
+
+Resources:
+  # ───── DynamoDB Tables ─────
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: eva9-users
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  CommentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: eva9-comments
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  MessagesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: eva9-messages
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  VisitsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: eva9-visits
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  # ───── Lambda Functions ─────
+  RegisterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: register/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/register
+            Method: POST
+
+  LoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: login/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/login
+            Method: POST
+
+  AdminLoginFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: admin/login/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/admin/login
+            Method: POST
+
+  CommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: comments/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/comments
+            Method: ANY
+
+  ContactFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: contact/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/contact
+            Method: POST
+
+  AdminCommentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: admin/comments/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/admin/comments
+            Method: ANY
+
+  AdminUsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: admin/users/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/admin/users
+            Method: GET
+
+  AdminMessagesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: admin/messages/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/admin/messages
+            Method: ANY
+
+  AdminVisitorsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: admin/visitors/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/admin/visitors
+            Method: GET
+
+  LogVisitFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: log-visit/index.handler
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            Path: /api/log-visit
+            Method: POST
