@@ -1,0 +1,160 @@
+---
+import Base from '@layouts/Base.astro';
+import { t, type Locale } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'zh') as Locale;
+
+interface Project {
+  title: string;
+  titleZh: string;
+  tagline: string;
+  taglineZh: string;
+  role: string;
+  roleZh: string;
+  tech: string[];
+  description: string;
+  descriptionZh: string;
+  status: string;
+  demoUrl?: string;
+  githubUrl?: string;
+  screenshot?: string;
+}
+
+const projects: Project[] = [
+  {
+    title: 'Smart Learn',
+    titleZh: 'Smart Learn',
+    tagline: 'AI-powered learning companion for students',
+    taglineZh: 'AI 驱动学习伴侣',
+    role: 'Founder & Architect',
+    roleZh: '创始人 & 架构师',
+    tech: ['SvelteKit', 'TypeScript', 'PostgreSQL', 'OpenAI API', 'Tailwind CSS'],
+    description: 'An intelligent education platform that generates course reviews, quizzes, and follow-up questions from uploaded materials. Features active learning pathways and encouragement-first tutoring methodology.',
+    descriptionZh: '智能教育平台，从上传材料自动生成课程复习、测验和跟进问题。具备主动学习路径和鼓励优先的教学方法。',
+    status: 'active',
+    demoUrl: 'http://lan.dell.sjd:3001',
+    githubUrl: 'https://github.com/Jacksang/smart_learn',
+  },
+  {
+    title: 'Ely (Resume Builder)',
+    titleZh: 'Ely（简历生成器）',
+    tagline: 'SaaS resume builder with rich editing & version comparison',
+    taglineZh: '支持富编辑与版本对比的 SaaS 简历生成器',
+    role: 'Founder & Architect',
+    roleZh: '创始人 & 架构师',
+    tech: ['SvelteKit', 'TypeScript', 'PostgreSQL', 'TipTap Editor', 'Drizzle ORM'],
+    description: 'A professional resume builder platform with rich text editing, multiple version management, visual diff comparison, and template-based generation. Tailored for career growth.',
+    descriptionZh: '专业简历生成平台，支持富文本编辑、多版本管理、可视化差异对比和模板化生成。为职业发展量身打造。',
+    status: 'shipped',
+    demoUrl: 'http://lan.dell.sjd:3001/ely',
+    githubUrl: 'https://github.com/Jacksang/ely',
+  },
+  {
+    title: 'Bug Tracker',
+    titleZh: 'Bug Tracker',
+    tagline: 'Self-hosted bug tracking for local development projects',
+    taglineZh: '本地开发项目的自托管 Bug 追踪工具',
+    role: 'Creator & Developer',
+    roleZh: '创始人 & 开发者',
+    tech: ['Node.js', 'Express', 'HTML/CSS', 'File System Storage'],
+    description: 'A lightweight, self-contained bug tracking service that scans workspace directories and lets developers submit bugs with screenshots directly to per-project bug folders. Zero external dependencies.',
+    descriptionZh: '轻量级自包含 Bug 追踪服务，自动扫描工作区目录，开发者可通过截图直接提交 Bug 到对应项目的文件夹。零外部依赖。',
+    status: 'active',
+    demoUrl: 'http://lan.dell.sjd:3003',
+    githubUrl: 'https://github.com/Jacksang/bug-tracker',
+  },
+  {
+    title: 'Enterprise E-Commerce Platform',
+    titleZh: '企业电商平台',
+    tagline: 'Cloud-native marketplace with payments & loyalty systems',
+    taglineZh: '云原生市场平台，集成支付与会员系统',
+    role: 'CTO & Lead Architect',
+    roleZh: 'CTO & 首席架构师',
+    tech: ['AWS', 'Alibaba Cloud', 'Node.js', 'React', 'Microservices', 'Redis', 'Kafka'],
+    description: 'Designed and built multiple high-scale e-commerce and marketplace platforms from scratch. Served millions of users with features including mobile payments, loyalty programs, real-time inventory, and multi-tenant architecture.',
+    descriptionZh: '从零设计并构建多个高并发电商与市场平台，服务数百万用户。功能涵盖移动支付、会员积分系统、实时库存和多租户架构。',
+    status: 'shipped',
+  },
+];
+---
+
+<Base
+  title={'作品集'}
+  description={'Jacky Chen 的项目作品'}
+  locale={locale}
+  ogType="website"
+>
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+      {locale === 'zh' ? '作品集' : 'Portfolio'}
+    </h1>
+    <p class="text-lg text-gray-500 dark:text-gray-400 mb-12">
+      {locale === 'zh' ? '我亲手打造的项目 — 从零开始，到规模化。' : 'Things I\'ve built — from scratch, at scale.'}
+    </p>
+
+    <div class="space-y-10">
+      {projects.map(project => (
+        <div class="border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden hover:shadow-lg transition-shadow">
+          <div class="p-6 md:p-8">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-1">
+                  {locale === 'zh' ? project.titleZh : project.title}
+                </h2>
+                <p class="text-gray-500 dark:text-gray-400">
+                  {locale === 'zh' ? project.taglineZh : project.tagline}
+                </p>
+              </div>
+              {project.status === 'active' && (
+                <span class="shrink-0 px-3 py-1 text-xs font-medium rounded-full bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">
+                  {locale === 'zh' ? '进行中' : 'Active'}
+                </span>
+              )}
+              {project.status === 'shipped' && (
+                <span class="shrink-0 px-3 py-1 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
+                  {locale === 'zh' ? '已交付' : 'Shipped'}
+                </span>
+              )}
+            </div>
+
+            <p class="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
+              {locale === 'zh' ? project.descriptionZh : project.description}
+            </p>
+
+            <div class="flex flex-wrap gap-2 mb-4">
+              {project.tech.map(tech => (
+                <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div class="flex items-center gap-4 text-sm">
+              <span class="text-gray-400">
+                <span class="font-medium text-gray-600 dark:text-gray-300">{locale === 'zh' ? '角色' : 'Role'}:</span> {locale === 'zh' ? project.roleZh : project.role}
+              </span>
+              {project.demoUrl && (
+                <a
+                  href={project.demoUrl}
+                  target="_blank"
+                  class="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                >
+                  {locale === 'zh' ? '在线演示' : 'Live Demo'} →
+                </a>
+              )}
+              {project.githubUrl && (
+                <a
+                  href={project.githubUrl}
+                  target="_blank"
+                  class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:underline font-medium"
+                >
+                  GitHub →
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>

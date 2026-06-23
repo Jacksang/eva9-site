@@ -11,6 +11,9 @@ interface Props {
 const { locale, currentPath } = Astro.props;
 const navItems = [
   { key: 'nav.home', path: `/${locale}` },
+  { key: 'nav.portfolio', path: `/${locale}/portfolio` },
+  { key: 'nav.services', path: `/${locale}/services` },
+  { key: 'nav.studies', path: `/${locale}/studies` },
   { key: 'nav.blog', path: `/${locale}/blog` },
   { key: 'nav.about', path: `/${locale}/about` },
   { key: 'nav.contact', path: `/${locale}/contact` },

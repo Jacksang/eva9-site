@@ -1,0 +1,153 @@
+<!doctype html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Homepage Mockup — eva9.ai</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #111827;
+    --muted: #6B7280;
+    --line: #E5E7EB;
+    --primary: #0D9488;
+    --primary-hover: #0F766E;
+    --accent: #F59E0B;
+    --surface: #F9FAFB;
+    --surface-hover: #F3F4F6;
+    --success: #16A34A;
+    --error: #DC2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111827;
+      --fg: #F9FAFB;
+      --muted: #9CA3AF;
+      --line: #374151;
+      --primary: #14B8A6;
+      --primary-hover: #2DD4BF;
+      --accent: #FBBF24;
+      --surface: #1F2937;
+      --surface-hover: #374151;
+      --success: #22C55E;
+      --error: #EF4444;
+    }
+  }
+  body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.4 ui-sans-serif, system-ui, -apple-system, sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  svg { width: 100%; height: auto; display: block; }
+  .title { font-size: 20px; font-weight: 650; fill: var(--fg); }
+  .label { font-size: 13px; font-weight: 600; fill: var(--fg); }
+  .small { font-size: 11px; fill: var(--muted); }
+  .xs { font-size: 10px; fill: var(--muted); }
+  .node { stroke: var(--line); stroke-width: 1; }
+  .primary-fill { fill: var(--primary); }
+  .primary-text { fill: #ffffff; }
+  .surface { fill: var(--surface); }
+  .bg { fill: var(--bg); }
+  .edge { stroke: var(--line); stroke-width: 1; fill: none; }
+  .hover-effect { stroke: var(--line); stroke-width: 1; }
+  .teal-badge { fill: #CCFBF1; }
+  .teal-badge-text { fill: #0F766E; font-size: 10px; font-weight: 600; }
+  .accent-bg { fill: #FEF3C7; }
+  .accent-text { fill: #92400E; font-size: 10px; font-weight: 600; }
+</style>
+<main>
+  <svg viewBox="0 0 1060 780" xmlns="http://www.w3.org/2000/svg">
+    <!-- Header bar -->
+    <rect x="0" y="0" width="1060" height="56" fill="var(--bg)" stroke="var(--line)" stroke-width="0.5" rx="0"/>
+    <text x="30" y="36" font-size="16" font-weight="700" fill="var(--primary)">Jacky Chen</text>
+    <rect x="950" y="14" width="40" height="28" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="956" y="33" font-size="12" fill="var(--muted)">🌙</text>
+    <rect x="900" y="14" width="46" height="28" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="908" y="33" font-size="11" fill="var(--fg)">EN|ZH</text>
+    <rect x="812" y="14" width="44" height="28" rx="6" fill="var(--bg)" stroke="var(--primary)" stroke-width="1"/>
+    <text x="820" y="33" font-size="11" fill="var(--primary)">Login</text>
+    <rect x="760" y="14" width="48" height="28" rx="6" fill="var(--primary)"/>
+    <text x="769" y="33" font-size="11" fill="#ffffff" font-weight="600">Register</text>
+    <line x1="0" y1="56" x2="1060" y2="56" stroke="var(--line)" stroke-width="0.5"/>
+
+    <!-- Hero section -->
+    <rect x="0" y="56" width="1060" height="180" fill="var(--bg)"/>
+    <text x="60" y="100" font-size="36" font-weight="700" fill="var(--fg)">👋 Hi, I'm Jacky Chen</text>
+    <text x="60" y="128" font-size="16" fill="var(--muted)">20+ years building cloud-native e-commerce platforms.</text>
+    <text x="60" y="148" font-size="16" fill="var(--muted)">I write about technology, learning, and life.</text>
+
+    <rect x="60" y="170" width="120" height="38" rx="8" fill="var(--primary)"/>
+    <text x="86" y="194" font-size="13" fill="#ffffff" font-weight="600">About Me</text>
+    <rect x="192" y="170" width="130" height="38" rx="8" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+    <text x="215" y="194" font-size="13" fill="var(--primary)" font-weight="600">My Services</text>
+
+    <!-- Explore by Category -->
+    <line x1="0" y1="256" x2="1060" y2="256" stroke="var(--line)" stroke-width="0.5"/>
+    <text x="60" y="288" font-size="18" font-weight="600" fill="var(--fg)">Explore by Category</text>
+
+    <rect x="60" y="308" width="220" height="120" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="140" y="340" font-size="24">💼</text>
+    <text x="100" y="370" font-size="15" font-weight="600" fill="var(--fg)">Work</text>
+    <text x="80" y="392" font-size="12" fill="var(--muted)">Consulting &amp; Tech</text>
+    <text x="250" y="410" font-size="18" fill="var(--primary)">→</text>
+
+    <rect x="295" y="308" width="220" height="120" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="375" y="340" font-size="24">📚</text>
+    <text x="332" y="370" font-size="15" font-weight="600" fill="var(--fg)">Learn</text>
+    <text x="318" y="392" font-size="12" fill="var(--muted)">Courses &amp; Study</text>
+    <text x="485" y="410" font-size="18" fill="var(--primary)">→</text>
+
+    <rect x="530" y="308" width="220" height="120" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="610" y="340" font-size="24">🎨</text>
+    <text x="568" y="370" font-size="15" font-weight="600" fill="var(--fg)">Hobby</text>
+    <text x="555" y="392" font-size="12" fill="var(--muted)">Projects &amp; Notes</text>
+    <text x="720" y="410" font-size="18" fill="var(--primary)">→</text>
+
+    <rect x="765" y="308" width="220" height="120" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <text x="845" y="340" font-size="24">🌍</text>
+    <text x="810" y="370" font-size="15" font-weight="600" fill="var(--fg)">Life</text>
+    <text x="790" y="392" font-size="12" fill="var(--muted)">Travel &amp; More</text>
+    <text x="955" y="410" font-size="18" fill="var(--primary)">→</text>
+
+    <!-- Recent Posts -->
+    <line x1="0" y1="460" x2="1060" y2="460" stroke="var(--line)" stroke-width="0.5"/>
+    <text x="60" y="490" font-size="18" font-weight="600" fill="var(--fg)">Recent Posts</text>
+
+    <!-- Post card 1 -->
+    <rect x="60" y="508" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <rect x="60" y="508" width="300" height="80" rx="12" fill="#E0F2FE" opacity="0.8"/>
+    <rect x="60" y="576" width="300" height="20" rx="0" fill="#E0F2FE"/>
+    <rect x="78" y="526" width="44" height="20" rx="10" fill="var(--primary)" opacity="0.85"/>
+    <text x="86" y="540" font-size="10" fill="#ffffff" font-weight="600">Work</text>
+    <text x="78" y="610" font-size="14" font-weight="600" fill="var(--fg)">How I Built a Cloud</text>
+    <text x="78" y="628" font-size="14" font-weight="600" fill="var(--fg)">E-Commerce Platform</text>
+    <text x="78" y="652" font-size="12" fill="var(--muted)">A deep dive into architecture...</text>
+    <text x="78" y="672" font-size="11" fill="var(--muted)">Jun 1 · 8 min read</text>
+
+    <!-- Post card 2 -->
+    <rect x="375" y="508" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <rect x="375" y="508" width="300" height="80" rx="12" fill="#FEF3C7" opacity="0.8"/>
+    <rect x="375" y="576" width="300" height="20" rx="0" fill="#FEF3C7"/>
+    <rect x="393" y="526" width="44" height="20" rx="10" fill="#92400E" opacity="0.85"/>
+    <text x="402" y="540" font-size="10" fill="#ffffff" font-weight="600">Learn</text>
+    <text x="393" y="610" font-size="14" font-weight="600" fill="var(--fg)">No-Code ML Getting</text>
+    <text x="393" y="628" font-size="14" font-weight="600" fill="var(--fg)">Started</text>
+    <text x="393" y="652" font-size="12" fill="var(--muted)">My journey into ML without...</text>
+    <text x="393" y="672" font-size="11" fill="var(--muted)">May 28 · 5 min read</text>
+
+    <!-- Post card 3 -->
+    <rect x="690" y="508" width="300" height="180" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1"/>
+    <rect x="690" y="508" width="300" height="80" rx="12" fill="#D1FAE5" opacity="0.8"/>
+    <rect x="690" y="576" width="300" height="20" rx="0" fill="#D1FAE5"/>
+    <rect x="708" y="526" width="48" height="20" rx="10" fill="#047857" opacity="0.85"/>
+    <text x="717" y="540" font-size="10" fill="#ffffff" font-weight="600">Hobby</text>
+    <text x="708" y="610" font-size="14" font-weight="600" fill="var(--fg)">My Home Lab Setup</text>
+    <text x="708" y="628" font-size="14" font-weight="600" fill="var(--fg)">2026</text>
+    <text x="708" y="652" font-size="12" fill="var(--muted)">Building a Pi cluster for...</text>
+    <text x="708" y="672" font-size="11" fill="var(--muted)">May 20 · 3 min read</text>
+
+    <!-- View All Posts link -->
+    <rect x="425" y="710" width="200" height="36" rx="8" fill="none" stroke="var(--primary)" stroke-width="1.5"/>
+    <text x="456" y="733" font-size="13" fill="var(--primary)" font-weight="600">View All Posts →</text>
+
+    <!-- Footer -->
+    <line x1="0" y1="770" x2="1060" y2="770" stroke="var(--line)" stroke-width="0.5"/>
+    <text x="60" y="795" font-size="12" fill="var(--muted)">© 2026 Jacky Chen  ·  Blog  ·  About  ·  Contact  ·  RSS</text>
+  </svg>
+</main>

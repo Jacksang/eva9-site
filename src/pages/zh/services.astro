@@ -1,0 +1,64 @@
+---
+import Base from '@layouts/Base.astro';
+import { t, type Locale } from '@lib/i18n';
+
+const locale = (Astro.currentLocale ?? 'zh') as Locale;
+---
+
+<Base
+  title={'服务'}
+  description={'Jacky Chen 提供的技术服务'}
+  locale={locale}
+  ogType="website"
+>
+  <section class="max-w-6xl mx-auto px-4 py-16">
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+      {locale === 'zh' ? '服务' : 'Services'}
+    </h1>
+    <p class="text-lg text-gray-500 dark:text-gray-400 mb-12">
+      {locale === 'zh' ? '20 年工程领导经验 — 提供自由职业与顾问服务。' : '20 years of engineering leadership — available for freelance and advisory.'}
+    </p>
+
+    <div class="grid md:grid-cols-2 gap-6 mb-16">
+      <div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">☁️</div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{locale === 'zh' ? '云架构' : 'Cloud Architecture'}</h3>
+        <p class="text-gray-600 dark:text-gray-400">{locale === 'zh' ? 'AWS 与阿里云 — 设计、迁移、优化、成本管理。' : 'AWS & Alibaba Cloud — design, migration, optimization, cost management.'}</p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🛒</div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{locale === 'zh' ? '电商与市场平台' : 'E-Commerce & Marketplaces'}</h3>
+        <p class="text-gray-600 dark:text-gray-400">{locale === 'zh' ? '全平台设计 — 支付、市场、会员系统 — 从零到生产。' : 'Full platform design — payments, marketplaces, loyalty systems — from zero to production.'}</p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🧠</div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{locale === 'zh' ? 'CTO 顾问' : 'CTO Advisory'}</h3>
+        <p class="text-gray-600 dark:text-gray-400">{locale === 'zh' ? '技术战略、团队建设、尽职调查、架构评审。' : 'Technical strategy, team building, due diligence, and architecture reviews.'}</p>
+      </div>
+
+      <div class="p-6 rounded-xl border border-gray-200 dark:border-gray-800 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all">
+        <div class="text-3xl mb-3">🤖</div>
+        <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{locale === 'zh' ? 'AI 集成' : 'AI Integration'}</h3>
+        <p class="text-gray-600 dark:text-gray-400">{locale === 'zh' ? 'LLM 驱动功能、自动化流程、智能代理 — 实用的 AI，而非炒作。' : 'LLM-powered features, automation pipelines, intelligent agents — practical AI, not hype.'}</p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center p-10 rounded-xl bg-gradient-to-br from-primary-50 to-blue-50 dark:from-primary-950 dark:to-gray-900 border border-primary-100 dark:border-primary-900">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+        {locale === 'zh' ? '有兴趣合作吗？' : 'Interested in working together?'}
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400 mb-6 max-w-lg mx-auto">
+        {locale === 'zh' ? '无论是完整的平台搭建、架构咨询，还是 AI 功能集成，我都可以帮助你。' : 'Whether it\'s a full platform build, architecture review, or AI feature integration — I can help.'}
+      </p>
+      <a
+        href={`/${locale}/contact`}
+        class="inline-block px-8 py-3 rounded-lg bg-primary-600 text-white font-medium hover:bg-primary-700 transition-colors"
+      >
+        {locale === 'zh' ? '联系我们' : 'Get in Touch'}
+      </a>
+    </div>
+  </section>
+</Base>
