@@ -8,15 +8,20 @@ interface Props {
 const { locale } = Astro.props;
 ---
 
-<footer class="border-t border-gray-200 dark:border-gray-800 py-8 mt-16">
-  <div class="max-w-6xl mx-auto px-4 text-center text-sm text-gray-500 dark:text-gray-400">
-    <p>&copy; {new Date().getFullYear()} eva9.ai — {t('footer.text', locale)}</p>
-    <div class="flex justify-center gap-4 mt-2">
-      <a href={`/${locale}/blog`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">{t('nav.blog', locale)}</a>
-      <a href={`/${locale}/about`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">{t('nav.about', locale)}</a>
-      <a href={`/${locale}/contact`} class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">{t('nav.contact', locale)}</a>
-      <a href="/sitemap.xml" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">Sitemap</a>
-      <a href="/rss.xml" class="hover:text-primary-600 dark:hover:text-primary-400 transition-colors">RSS</a>
+<footer class="border-t border-gray-200/60 dark:border-gray-800/60 py-12">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2.5 text-sm text-gray-400 dark:text-gray-500">
+        <span class="flex items-center justify-center w-6 h-6 rounded-md bg-primary-600 dark:bg-primary-500 text-white text-[10px] font-bold">J</span>
+        <span>&copy; {new Date().getFullYear()} eva9.ai</span>
+      </div>
+      <div class="flex items-center gap-5 text-xs text-gray-400 dark:text-gray-500">
+        <a href={`/${locale}/blog`} class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{t('nav.blog', locale)}</a>
+        <a href={`/${locale}/about`} class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{t('nav.about', locale)}</a>
+        <a href={`/${locale}/contact`} class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{t('nav.contact', locale)}</a>
+        <a href="/sitemap.xml" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">Sitemap</a>
+        <a href="/rss.xml" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">RSS</a>
+      </div>
     </div>
   </div>
 </footer>

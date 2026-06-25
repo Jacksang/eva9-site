@@ -7,6 +7,7 @@ export default defineConfig({
   output: 'static',
   server: {
     port: 3004,
+    host: '0.0.0.0',
   },
   i18n: {
     defaultLocale: 'en',
@@ -17,6 +18,9 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ['lan.dell.sjd', '.dell.sjd'],
+    },
   },
   markdown: {
     shikiConfig: {

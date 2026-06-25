@@ -31,9 +31,10 @@ const currentPath = Astro.url.pathname;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Geist + JetBrains Mono via Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
 
     <!-- SEO Meta -->
     <title>{title} — blog.eva9.ai</title>
@@ -73,12 +74,28 @@ const currentPath = Astro.url.pathname;
       })();
     </script>
   </head>
-  <body class="min-h-screen flex flex-col bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors">
+  <body class="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors selection:bg-primary-200 dark:selection:bg-primary-800">
     <Header locale={locale} currentPath={currentPath} />
     <main class="flex-1">
       <slot />
     </main>
     <Footer locale={locale} />
+
+    <!-- Scroll-reveal observer (lightweight, no deps) -->
+    <script is:inline>
+      (function() {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) e.target.classList.add('visible');
+          });
+        }, { threshold: 0.15 });
+        document.addEventListener('astro:page-load', function() {
+          document.querySelectorAll('.reveal').forEach(function(el) {
+            if (!el.classList.contains('visible')) observer.observe(el);
+          });
+        });
+      })();
+    </script>
 
     <!-- Visit logging (fire-and-forget) -->
     <script>
